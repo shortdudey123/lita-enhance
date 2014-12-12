@@ -1,6 +1,5 @@
 require 'chef'
 require 'thread'
-require 'weakref'
 
 module Lita
   module Handlers
@@ -172,35 +171,6 @@ module Lita
           end
         end
 
-        class Enhancer
-          @@subclasses = []
-
-          @@start = "*"
-          @@end = "*"
-
-          def self.all
-            @@subclasses.select! {|x| x.weakref_alive? }
-            @@subclasses
-          end
-
-          def self.inherited(subclass)
-            @@subclasses << WeakRef.new(subclass)
-          end
-
-          def render(node, original, level)
-            node ? "#{@@start}#{node.render(level)}#{@@end}" : original
-          end
-
-          def max_level
-            4
-          end
-        end
-
-        require 'lita/handlers/enhancers/hostname_enhancer'
-        require 'lita/handlers/enhancers/instance_id_enhancer'
-        require 'lita/handlers/enhancers/ip_enhancer'
-        require 'lita/handlers/enhancers/mac_address_enhancer'
-
         # This mutex must be obtained to refresh the index
         REFRESH_MUTEX = Mutex.new unless defined?(REFRESH_MUTEX)
 
@@ -260,6 +230,8 @@ module Lita
           @@enhancers.map {|x| x.max_level }.max
         end
     end
+
+    require 'lita/handlers/enhance/enhancer'
 
     Lita.register_handler(Enhance)
   end
