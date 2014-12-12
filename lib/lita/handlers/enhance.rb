@@ -24,7 +24,7 @@ module Lita
         :enhance,
         command: true,
         help: {
-          'enhance <anthing>' => 'Enhances details in your text. https://www.youtube.com/watch?v=Vxq9yj2pVWk'
+          'enhance <anything>' => 'Enhances details in your text. https://www.youtube.com/watch?v=Vxq9yj2pVWk'
         }
       )
 
