@@ -145,32 +145,6 @@ module Lita
       end
 
       private
-        class Node
-          attr_accessor :name, :dc, :environment, :fqdn
-
-          def self.from_chef_node(node)
-            new.tap do |n|
-              n.name = node.name
-              n.dc = if node['ec2']
-                       node['ec2']['placement_availability_zone']
-                     elsif node['cloud']
-                       node['cloud']['provider']
-                     end
-              n.environment = node.environment
-              n.fqdn = node['fqdn']
-            end
-          end
-
-          def render(level)
-            case level
-            when 1 then name
-            when 2 then "#{name} (#{dc})"
-            when 3 then "#{name} (#{dc}, #{environment})"
-            when 4 then "#{fqdn} (#{dc}, #{environment})"
-            end
-          end
-        end
-
         # This mutex must be obtained to refresh the index
         REFRESH_MUTEX = Mutex.new unless defined?(REFRESH_MUTEX)
 
@@ -231,6 +205,7 @@ module Lita
         end
     end
 
+    require 'lita/handlers/enhance/node'
     require 'lita/handlers/enhance/enhancer'
 
     Lita.register_handler(Enhance)
