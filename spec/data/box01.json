@@ -1,0 +1,214 @@
+{
+  "name": "box01",
+  "chef_environment": "_default",
+  "run_list": [
+    "role[box]"
+  ],
+  "normal": {
+    "tags": [
+
+    ]
+  },
+  "default": {
+  },
+  "override": {
+  },
+  "automatic": {
+    "network": {
+      "interfaces": {
+        "lo": {
+          "mtu": "16436",
+          "flags": [
+            "LOOPBACK",
+            "UP",
+            "LOWER_UP"
+          ],
+          "encapsulation": "Loopback",
+          "addresses": {
+            "127.0.0.1": {
+              "family": "inet",
+              "prefixlen": "8",
+              "netmask": "255.0.0.0",
+              "scope": "Node"
+            }
+          },
+          "state": "unknown"
+        },
+        "eth0": {
+          "type": "eth",
+          "number": "0",
+          "mtu": "1500",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "encapsulation": "Ethernet",
+          "addresses": {
+            "22:00:0A:FE:4A:79": {
+              "family": "lladdr"
+            },
+            "10.254.74.121": {
+              "family": "inet",
+              "prefixlen": "26",
+              "netmask": "255.255.255.192",
+              "broadcast": "10.254.74.127",
+              "scope": "Global"
+            }
+          },
+          "state": "unknown",
+          "arp": {
+            "10.254.74.65": "fe:ff:ff:ff:ff:ff"
+          },
+          "routes": [
+            {
+              "destination": "10.254.74.64/26",
+              "family": "inet",
+              "scope": "link",
+              "proto": "kernel",
+              "src": "10.254.74.121"
+            },
+            {
+              "destination": "default",
+              "family": "inet",
+              "via": "10.254.74.65",
+              "metric": "100"
+            }
+          ]
+        },
+        "dummy0": {
+          "type": "dummy",
+          "number": "0",
+          "mtu": "1500",
+          "flags": [
+            "BROADCAST",
+            "NOARP"
+          ],
+          "encapsulation": "Ethernet",
+          "addresses": {
+            "A2:95:58:46:D9:6F": {
+              "family": "lladdr"
+            }
+          },
+          "state": "down"
+        },
+        "ifb0": {
+          "type": "ifb",
+          "number": "0",
+          "mtu": "1500",
+          "flags": [
+            "BROADCAST",
+            "NOARP"
+          ],
+          "encapsulation": "Ethernet",
+          "addresses": {
+            "3E:AA:FD:34:EB:30": {
+              "family": "lladdr"
+            }
+          },
+          "state": "down"
+        },
+        "ifb1": {
+          "type": "ifb",
+          "number": "1",
+          "mtu": "1500",
+          "flags": [
+            "BROADCAST",
+            "NOARP"
+          ],
+          "encapsulation": "Ethernet",
+          "addresses": {
+            "EE:9F:35:EC:3D:DA": {
+              "family": "lladdr"
+            }
+          },
+          "state": "down"
+        },
+        "eql": {
+          "mtu": "576",
+          "state": "down"
+        }
+      },
+      "default_interface": "eth0",
+      "default_gateway": "10.254.74.65"
+    },
+    "ipaddress": "10.254.74.121",
+    "macaddress": "22:00:0A:FE:4A:79",
+    "keys": {
+      "ssh": {
+        "host_rsa_public": "AAAAB3NzaC1yc2EAAAABIwAAAQEAxJUBgAzDSM6Wf6sVhvDhrH4jhtsC1MnsCQoZ9by+ZCbSkt2JZMRXF0QJHagt2W0KGsCHW0q435CuLFYUPiN2KWMWjlEm9E8tYP8w6YQdAVeVh9pBcqofaOLI3OY0Wu7fSaeexcGMAcpacoTXn4p77IEovuWhLPjpKfhZky9IIn7hzKDd9aF3U8SNhY4kZAE/WQbGtztjZef62to8bzTIJO5GXyYM61z6taT6qNVIg1d5WVGbERDNllvI2KhJD+V4Q7WT3GA5c9Ul5CA5srTQRppVIeR0h/elzLhzfb/553BPptia5uh/aQvZJw1PWGbdk29kSh/QtqncA5V40QLVUw==",
+        "host_dsa_public": "AAAAB3NzaC1kc3MAAACBAK6IRMGDyEbc+Nk68qZKMerT9RyG+ZKSKUiFrw8HDQe2xnxafcMLkmQg5GcGSdavm2hFa3xz2GD2dTC+idxdGHVhCzLcajHmDQka0GS8oHua+SyQRJJdgBO+NCsAJQy5oxDuXabcMphb6KcTVpLecKTQxTtqiMiPwpczlh25Xf4tAAAAFQCKt9cMD8hLDTLZe5xFUEw7cJnWcQAAAIBrYqdEee1Tc5Kdu9r2DiOpKMTsIpR/yNeVtFax1JTa1CBdWLriIjoARFtptKYIfoKeSUm2ma4vmWISGKTBmGATKT19N38pXn7g5xZA6GHWAmqMMSi1qnaySlSPeL6LcNU6PvymVWwvwRHwvyQO1Azt7UEwpC22i/345pPvQG+clgAAAIAPNrrsZNDwuDLEDZeLBIuyNcCZCSOLFBL+WnFPQu+kzAsj0LpV7N+ndgu2XS1t+YVVMhEnGB0lxjuig8M4OTkjvrwWdFYJRANhq1KLbERcYRreqvVF5/zq+XddCfvxOzFpZwXPI34RKxSaPheEp7QFEOovEjDdp3XlzF9nx7QU5Q=="
+      }
+    },
+    "ec2": {
+      "ami_id": "ami-f6ec60c6",
+      "ami_launch_index": "0",
+      "ami_manifest_path": "ubuntu-us-west-2/images/ubuntu-lucid-10.04-amd64-server-20120403.manifest.xml",
+      "block_device_mapping_ami": "sda1",
+      "block_device_mapping_ephemeral0": "sda2",
+      "block_device_mapping_root": "/dev/sda1",
+      "block_device_mapping_swap": "sda3",
+      "hostname": "ip-10-254-74-121.us-west-2.compute.internal",
+      "instance_action": "none",
+      "instance_id": "i-fe4cddcb",
+      "instance_type": "m1.small",
+      "kernel_id": "aki-ace26f9c",
+      "local_hostname": "ip-10-254-74-121.us-west-2.compute.internal",
+      "local_ipv4": "10.254.74.121",
+      "mac": "22:00:0A:FE:4A:79",
+      "metrics_vhostmd": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+      "network_interfaces_macs": {
+        "22:00:0a:fe:4a:79": {
+          "device_number": "0",
+          "local_hostname": "ip-10-254-74-121.us-west-2.compute.internal",
+          "local_ipv4s": "10.254.74.121",
+          "mac": "22:00:0a:fe:4a:79",
+          "owner_id": "622089341825",
+          "public_hostname": "ec2-54-214-188-37.us-west-2.compute.amazonaws.com",
+          "public_ipv4s": "54.214.188.37"
+        }
+      },
+      "placement_availability_zone": "us-west-2b",
+      "profile": "default-paravirtual",
+      "public_hostname": "ec2-54-214-188-37.us-west-2.compute.amazonaws.com",
+      "public_ipv4": "54.214.188.37",
+      "public_keys_0_openssh_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCYse3BugFU1TqN8NNCgIe/nm+2p8r7x5zSGXSAFEGTZGmRn57eCyi094K5uQi8rZ1uY/ULeKbtvDcYM1h84/9Thc18IYdsVeCKgkqpJg56vPYIPV35wrk66aJEJbzZfLo176H27j4Rw8fuJhj8tDbv3nuGLWjcZUa4/VM6rntqKQ26Qpu8KF+spd7Az5mNbeSI4m+didB0fWxun9t/8GrKCQP6lFXuv+6oVzmgzV3w5yd1QXp2VqfbqzVlQPgzZvCVWnsR/QVJbrLLNJF0zOKUw/AquIYGHORPNHUBIQwYnycGNuOlgUGA/PtYpPPhwA9dO7Txs730Udxmp/gjNqIj us-west-2-test\n",
+      "reservation_id": "r-994854ab",
+      "security_groups": [
+        "box"
+      ],
+      "userdata": null
+    },
+    "cloud": {
+      "public_ips": [
+        "54.214.188.37"
+      ],
+      "private_ips": [
+        "10.254.74.121"
+      ],
+      "public_ipv4": "54.214.188.37",
+      "public_hostname": "ec2-54-214-188-37.us-west-2.compute.amazonaws.com",
+      "local_ipv4": "10.254.74.121",
+      "local_hostname": "ip-10-254-74-121.us-west-2.compute.internal",
+      "provider": "ec2"
+    },
+    "cloud_v2": {
+      "public_ipv4_addrs": [
+        "54.214.188.37"
+      ],
+      "local_ipv4_addrs": [
+        "10.254.74.121"
+      ],
+      "provider": "ec2",
+      "public_hostname": "ec2-54-214-188-37.us-west-2.compute.amazonaws.com",
+      "local_hostname": "ip-10-254-74-121.us-west-2.compute.internal",
+      "public_ipv4": "54.214.188.37",
+      "local_ipv4": "10.254.74.121"
+    },
+    "hostname": "box01",
+    "machinename": "box01",
+    "fqdn": "box01.example.com",
+    "domain": "example.com"
+  }
+}

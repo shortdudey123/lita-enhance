@@ -1,0 +1,123 @@
+{
+  "name": "box03",
+  "chef_environment": "_default",
+  "run_list": [
+    "role[box]"
+  ],
+  "normal": {
+    "tags": [
+
+    ]
+  },
+  "default": {
+  },
+  "override": {
+  },
+  "automatic": {
+    "keys": {
+      "ssh": {
+        "host_rsa_public": "AAAAB3NzaC1yc2EAAAABIwAAAQEAwJG73+B0DXHejLpJBKgqSsobAjSh4AIvgRmhwcc7tR1FjXb1omzeYLCf5zto68XqRMAoFF+WbXjnw28id3tY7BGHK+n+MJ7ShJQPlVQUFFuuWXXX/GzSknxSyR1BaqBBeGJSFtav3DbEkuIxUPsHeV17oN+56a+Il2OxEVECNnflcgqm+Z9PnohN0v6v5oen7l43b+yRekU/76XFcDB51uc6Xk05HRRn927YGJczeWHspALsA3O77KpQtOidwC184FcVoz/bPUwwUalrGrH5DmdEn92y+fyYoGpiwTFIhi77XOzGPGCCZprbkaskjYrORFMSHPg8ig1loK5Ntc7XPw==",
+        "host_dsa_public": "AAAAB3NzaC1kc3MAAACBAJuzd4J4Fu6rxd3XefC+y2JB3TZIpPoS3gvqQborXQOXHYFfNR68FyeGpS4HE0FHyf3X/I7RxmuYpmIaol+hjU61L/qb65ZJ1wz2Uz2C+sJYv+rpXVWYAC84qYtTLcVeGj3hVmlpigSawctiCIgrj+hRo1Up0IwDVSh51E2BwvWXAAAAFQD8JS0TfdY3V/2OUHDqNe7CaYa8RwAAAIARjr1dyPeXKO/tes1O7URy5S+QsU+7vfgrxnLa5mYfO9MdyY6XI++Ccyev+l0uD72bLRgtwVI1KwD9tgS9+QqkHheTsQYWkhG+x8DNhXmJn3amXGhQcwp9sn/GaY3IL6VnIElhDEWxg7m7BfGU9gAHrfXT0PAPUYNtWM4aVGqFKgAAAIAeNeP7FPFDVvK/1tRLr/yqGcv9jCMLcmGi3F7M7PaevRqtWMOj1snaGPVjL1sq7SfFZHCrmBgCIaRqeawXkGPbaTZyYLigm53MwzN0+25RI+IBrmRu+zBLfTkpmXVB63AjXLWI/G87UyxH3zRVQH8qOfXIR6ueLsWGqkk4zlJ4Hw==",
+        "host_ecdsa_public": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJKnlvjXRp46V8j+LA7JwyJx9+B9kEysNOogv4W5u4/hs8inO4K5aSr4f1Bsc+UM3Oj/cr1MWvXlHQC52rBQpPo=",
+        "host_ecdsa_type": "ecdsa-sha2-nistp256"
+      }
+    },
+    "hostname": "box03",
+    "machinename": "box03",
+    "fqdn": "box03.example.com",
+    "domain": "example.com",
+    "network": {
+      "interfaces": {
+        "lo": {
+          "mtu": "65536",
+          "flags": [
+            "LOOPBACK",
+            "UP",
+            "LOWER_UP"
+          ],
+          "encapsulation": "Loopback",
+          "addresses": {
+            "127.0.0.1": {
+              "family": "inet",
+              "prefixlen": "8",
+              "netmask": "255.0.0.0",
+              "scope": "Node"
+            }
+          },
+          "state": "unknown"
+        },
+        "eth0": {
+          "type": "eth",
+          "number": "0",
+          "mtu": "1500",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "encapsulation": "Ethernet",
+          "addresses": {
+            "F2:3C:91:56:A2:00": {
+              "family": "lladdr"
+            },
+            "192.155.85.2": {
+              "family": "inet",
+              "prefixlen": "24",
+              "netmask": "255.255.255.0",
+              "broadcast": "192.155.85.255",
+              "scope": "Global"
+            }
+          },
+          "state": "up",
+          "arp": {
+            "192.155.85.1": "00:00:0c:9f:f0:0a",
+            "192.155.85.3": "84:78:ac:0d:a6:41",
+            "192.155.85.2": "84:78:ac:0d:79:c1"
+          },
+          "routes": [
+            {
+              "destination": "default",
+              "family": "inet",
+              "via": "192.155.85.1"
+            },
+            {
+              "destination": "192.155.85.0/24",
+              "family": "inet",
+              "scope": "link",
+              "proto": "kernel",
+              "src": "192.155.85.2"
+            }
+          ]
+        }
+      },
+      "default_interface": "eth0",
+      "default_gateway": "192.155.85.1"
+    },
+    "ipaddress": "192.155.85.2",
+    "macaddress": "F2:3C:91:56:A2:00",
+    "linode": {
+      "public_ip": "192.155.85.2"
+    },
+    "cloud_v2": {
+      "public_ipv4_addrs": [
+        "192.155.85.2"
+      ],
+      "provider": "linode",
+      "public_ipv4": "192.155.85.2"
+    },
+    "cloud": {
+      "public_ips": [
+        "192.155.85.2"
+      ],
+      "private_ips": [
+        null
+      ],
+      "public_ipv4": null,
+      "public_hostname": null,
+      "local_ipv4": null,
+      "local_hostname": null,
+      "provider": "linode"
+    }
+  }
+}
