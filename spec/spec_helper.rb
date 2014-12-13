@@ -26,12 +26,16 @@ RSpec.shared_context 'mocks' do
     [west2_chef_node, west1_chef_node, linode_chef_node]
   end
 
-  let(:nodes_and_chef_nodes) do
-    chef_nodes.map do |chef_node|
+  let(:nodes) do
+    chef_nodes.map do |chef_node| 
       node = Lita::Handlers::Enhance::Node.from_chef_node(chef_node)
       node.store!(redis)
-      [node, chef_node]
+      node
     end
+  end
+
+  let(:nodes_and_chef_nodes) do
+    nodes.zip(chef_nodes)
   end
 end
 
