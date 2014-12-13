@@ -2,13 +2,9 @@ require "spec_helper"
 
 describe Lita::Handlers::Enhance::Node do
   include_context 'mocks'
+  include_context 'redis'
 
-  let(:redis) { Redis.new }
   let(:node) { Lita::Handlers::Enhance::Node.from_chef_node(west2_chef_node) }
-
-  before do
-    redis.flushdb
-  end
 
   it 'should be able to create a node from a Chef::Node' do
     expect(node.name).to eq('box01')

@@ -42,7 +42,7 @@ module Lita
 
       def setup_background_refresh(payload)
         @@last_refreshed = nil
-        @@enhancers = Enhancer.all.map(&:new)
+        @@enhancers = []
 
         bg_refresh = proc do
           begin
@@ -160,7 +160,9 @@ module Lita
         def refresh_index
           log.info { "Refreshing enhance index..." }
 
-          enhancers = Enhancer.all.map(&:new)
+          enhancers = Enhancer.all.map do |enhancer_klass|
+            enhancer_klass.new(redis)
+          end
 
           config.knife_configs.each do |_, config_path|
             index(config_path, enhancers)
@@ -192,6 +194,8 @@ module Lita
 
           query.search("node", "*:*") do |chef_node|
             node = Node.from_chef_node(chef_node)
+            node.store!(redis)
+
             enhancers.each {|e| e.index(chef_node, node) }
           end
         end

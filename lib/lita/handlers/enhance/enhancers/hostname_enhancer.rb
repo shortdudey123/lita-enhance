@@ -4,7 +4,8 @@ module Lita
       class HostnameEnhancer < Enhancer
         HOSTNAME_REGEX = /\b((([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)+([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]))\b/
 
-        def initialize
+        def initialize(redis)
+          super
           @nodes_by_hostname = {}
           @nodes_by_short_hostnames = {}
         end
@@ -25,10 +26,12 @@ module Lita
 
         def enhance!(string, level)
           string.gsub!(HOSTNAME_REGEX) do |hostname|
-            render(@nodes_by_hostname[hostname], hostname, level)
+            node = self.node(@nodes_by_hostname[hostname])
+            render(node, hostname, level)
           end
           string.gsub!(short_hostname_regex) do |hostname|
-            render(@nodes_by_short_hostnames[hostname], hostname, level)
+            node = self.node(@nodes_by_short_hostnames[hostname])
+            render(node, hostname, level)
           end
         end
 
@@ -47,8 +50,8 @@ module Lita
 
           short_hostname = hostname.split('.')[0]
 
-          @nodes_by_hostname[hostname] = node
-          @nodes_by_short_hostnames[short_hostname] = node
+          @nodes_by_hostname[hostname] = node.name
+          @nodes_by_short_hostnames[short_hostname] = node.name
         end
       end
     end

@@ -2,12 +2,12 @@ require "spec_helper"
 
 describe Lita::Handlers::Enhance::IpEnhancer do
   include_context 'mocks'
+  include_context 'redis'
 
-  let(:enhancer) { Lita::Handlers::Enhance::IpEnhancer.new }
+  let(:enhancer) { Lita::Handlers::Enhance::IpEnhancer.new(redis) }
 
   before do
-    chef_nodes.each do |chef_node|
-      node = Lita::Handlers::Enhance::Node.from_chef_node(chef_node)
+    nodes_and_chef_nodes.each do |node, chef_node|
       enhancer.index(chef_node, node)
     end
   end

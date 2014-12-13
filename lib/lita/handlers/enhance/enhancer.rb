@@ -18,12 +18,26 @@ module Lita
           @@subclasses << WeakRef.new(subclass)
         end
 
+        attr_reader :redis
+
+        def initialize(redis)
+          @redis = redis
+          @nodes = {}
+        end
+
         def render(node, original, level)
           node ? "#{@@start}#{node.render(level)}#{@@end}" : original
         end
 
         def max_level
           4
+        end
+
+        # Lazily loads a node from Redis and caches the result.
+        def node(name)
+          @nodes[name] ||= begin
+                             Node.load(redis, name)
+                           end
         end
       end
 
