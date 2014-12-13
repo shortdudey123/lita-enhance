@@ -1,3 +1,5 @@
+require 'lita/handlers/enhance/node_index'
+
 module Lita
   module Handlers
     class Enhance
@@ -8,18 +10,18 @@ module Lita
 
         def initialize(redis)
           super
-          @nodes_by_mac_address = {}
+          @nodes_by_mac_address = NodeIndex.new(redis, 'nodes_by_mac_address')
         end
 
         def index(chef_node, node)
           if chef_node['macaddress']
-            @nodes_by_mac_address[chef_node['macaddress'].downcase] = node.name
+            @nodes_by_mac_address[chef_node['macaddress'].downcase] = node
           end
         end
 
         def enhance!(string, level)
           string.gsub!(MAC_ADDRESS_REGEX) do |mac_address|
-            node = self.node(@nodes_by_mac_address[mac_address.downcase])
+            node = @nodes_by_mac_address[mac_address.downcase]
             render(node, mac_address, level)
           end
         end

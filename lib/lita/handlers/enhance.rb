@@ -42,7 +42,9 @@ module Lita
 
       def setup_background_refresh(payload)
         @@last_refreshed = nil
-        @@enhancers = []
+        @@enhancers = Enhancer.all.map do |enhancer_klass|
+          enhancer_klass.new(redis)
+        end
 
         bg_refresh = proc do
           begin

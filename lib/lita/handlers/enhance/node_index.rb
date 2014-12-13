@@ -16,12 +16,12 @@ module Lita
         end
 
         # Adds a node to the index
-        def add(key, node)
+        def []=(key, node)
           redis.hset(index_name, key, node.name)
         end
 
         # Finds a node in the index. A Node object is return if found, otherwise nil is returned.
-        def search(key)
+        def [](key)
           node_name = redis.hget(index_name, key)
           Node.load(redis, node_name)
         end
@@ -29,6 +29,11 @@ module Lita
         # Returns the number of keys that are stored in this index.
         def size
           redis.hlen(index_name)
+        end
+
+        # Returns all the keys that defined in this index.
+        def keys
+          redis.hkeys(index_name)
         end
       end
     end
