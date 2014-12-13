@@ -22,7 +22,6 @@ module Lita
 
         def initialize(redis)
           @redis = redis
-          @nodes = {}
         end
 
         def render(node, original, level)
@@ -31,13 +30,6 @@ module Lita
 
         def max_level
           4
-        end
-
-        # Lazily loads a node from Redis and caches the result.
-        def node(name)
-          @nodes[name] ||= begin
-                             Node.load(redis, name)
-                           end
         end
       end
 
