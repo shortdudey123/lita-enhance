@@ -40,7 +40,7 @@ module Lita
         end
 
         def to_s
-          "#{self.class.name}: #{@short_hostnames.size} short hostnames, #{@nodes_by_hostname.size} long hostnames indexed"
+          "#{self.class.name}: #{@nodes_by_short_hostnames.size} short hostnames, #{@nodes_by_hostname.size} long hostnames indexed"
         end
 
         private

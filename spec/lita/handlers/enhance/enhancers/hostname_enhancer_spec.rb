@@ -47,4 +47,8 @@ describe Lita::Handlers::Enhance::HostnameEnhancer do
     enhancer.enhance!(message, 1)
     expect(message).to eq('before *box01* after')
   end
+
+  it 'should return a custom response to to_s' do
+    expect(enhancer.to_s).to match /short hostnames.*long hostnames indexed/
+  end
 end

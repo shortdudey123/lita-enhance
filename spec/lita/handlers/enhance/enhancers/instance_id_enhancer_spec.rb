@@ -17,4 +17,8 @@ describe Lita::Handlers::Enhance::InstanceIdEnhancer do
     enhancer.enhance!(message, 1)
     expect(message).to eq('before *box01* *box02* after')
   end
+
+  it 'should return a custom response to to_s' do
+    expect(enhancer.to_s).to match /instance IDs indexed/
+  end
 end

@@ -29,4 +29,8 @@ describe Lita::Handlers::Enhance::IpEnhancer do
     enhancer.enhance!(message, 1)
     expect(message).to eq('before *box03* after')
   end
+
+  it 'should return a custom response to to_s' do
+    expect(enhancer.to_s).to match /IPs indexed/
+  end
 end

@@ -17,5 +17,9 @@ describe Lita::Handlers::Enhance::MacAddressEnhancer do
     enhancer.enhance!(message, 1)
     expect(message).to eq('before *box01* *box03* after')
   end
+
+  it 'should return a custom response for to_s' do
+    expect(enhancer.to_s).to match /MAC addresses indexed/
+  end
 end
 
