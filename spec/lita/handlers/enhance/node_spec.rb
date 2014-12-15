@@ -33,4 +33,11 @@ describe Lita::Handlers::Enhance::Node do
     expect(new_node.name).to eq(node.name)
     expect(new_node.last_seen_at).to be_kind_of(Time)
   end
+
+  it 'should be able to render itself at differing levels of detail' do
+    expect(node.render(1)).to eq('box01')
+    expect(node.render(2)).to eq('box01 (us-west-2b)')
+    expect(node.render(3)).to eq('box01 (us-west-2b, _default)')
+    expect(node.render(4)).to eq('box01.example.com (us-west-2b, _default)')
+  end
 end
