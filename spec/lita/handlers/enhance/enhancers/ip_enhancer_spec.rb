@@ -2,12 +2,12 @@ require "spec_helper"
 
 describe Lita::Handlers::Enhance::IpEnhancer do
   include_context 'mocks'
+  include_context 'redis'
 
-  let(:enhancer) { Lita::Handlers::Enhance::IpEnhancer.new }
+  let(:enhancer) { Lita::Handlers::Enhance::IpEnhancer.new(redis) }
 
   before do
-    chef_nodes.each do |chef_node|
-      node = Lita::Handlers::Enhance::Node.from_chef_node(chef_node)
+    nodes_and_chef_nodes.each do |node, chef_node|
       enhancer.index(chef_node, node)
     end
   end
@@ -28,5 +28,9 @@ describe Lita::Handlers::Enhance::IpEnhancer do
     message = 'before 192.155.85.2 after'
     enhancer.enhance!(message, 1)
     expect(message).to eq('before *box03* after')
+  end
+
+  it 'should return a custom response to to_s' do
+    expect(enhancer.to_s).to match /IPs indexed/
   end
 end

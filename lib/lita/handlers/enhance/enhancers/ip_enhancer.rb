@@ -1,11 +1,14 @@
+require 'lita/handlers/enhance/node_index'
+
 module Lita
   module Handlers
     class Enhance
       class IpEnhancer < Enhancer
         IP_REGEX = /([0-9]{1,3}\.){3}[0-9]{1,3}/
 
-        def initialize
-          @nodes_by_ip = {}
+        def initialize(redis)
+          super
+          @nodes_by_ip = NodeIndex.new(redis, 'nodes_by_ip')
         end
 
         def index(chef_node, node)
@@ -30,7 +33,8 @@ module Lita
 
         def enhance!(string, level)
           string.gsub!(IP_REGEX) do |ip|
-            render(@nodes_by_ip[ip], ip, level)
+            node = @nodes_by_ip[ip]
+            render(node, ip, level)
           end
         end
 
@@ -41,4 +45,3 @@ module Lita
     end
   end
 end
-

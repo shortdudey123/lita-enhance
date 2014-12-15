@@ -2,12 +2,12 @@ require "spec_helper"
 
 describe Lita::Handlers::Enhance::HostnameEnhancer do
   include_context 'mocks'
+  include_context 'redis'
 
-  let(:enhancer) { Lita::Handlers::Enhance::HostnameEnhancer.new }
+  let(:enhancer) { Lita::Handlers::Enhance::HostnameEnhancer.new(redis) }
 
   before do
-    chef_nodes.each do |chef_node|
-      node = Lita::Handlers::Enhance::Node.from_chef_node(chef_node)
+    nodes_and_chef_nodes.each do |node, chef_node|
       enhancer.index(chef_node, node)
     end
   end
@@ -46,5 +46,9 @@ describe Lita::Handlers::Enhance::HostnameEnhancer do
     message = 'before box01 after'
     enhancer.enhance!(message, 1)
     expect(message).to eq('before *box01* after')
+  end
+
+  it 'should return a custom response to to_s' do
+    expect(enhancer.to_s).to match /short hostnames.*long hostnames indexed/
   end
 end

@@ -1,3 +1,5 @@
+require 'lita/handlers/enhance/node_index'
+
 module Lita
   module Handlers
     class Enhance
@@ -6,8 +8,9 @@ module Lita
 
         MAC_ADDRESS_REGEX = /([0-9a-f]{2}:){5}[0-9a-f]{2}/i
 
-        def initialize
-          @nodes_by_mac_address = {}
+        def initialize(redis)
+          super
+          @nodes_by_mac_address = NodeIndex.new(redis, 'nodes_by_mac_address')
         end
 
         def index(chef_node, node)
@@ -18,7 +21,8 @@ module Lita
 
         def enhance!(string, level)
           string.gsub!(MAC_ADDRESS_REGEX) do |mac_address|
-            render(@nodes_by_mac_address[mac_address.downcase], mac_address, level)
+            node = @nodes_by_mac_address[mac_address.downcase]
+            render(node, mac_address, level)
           end
         end
 

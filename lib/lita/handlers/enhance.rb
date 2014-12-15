@@ -1,6 +1,5 @@
 require 'chef'
 require 'thread'
-require 'weakref'
 
 module Lita
   module Handlers
@@ -43,7 +42,9 @@ module Lita
 
       def setup_background_refresh(payload)
         @@last_refreshed = nil
-        @@enhancers = Enhancer.all.map(&:new)
+        @@enhancers = Enhancer.all.map do |enhancer_klass|
+          enhancer_klass.new(redis)
+        end
 
         bg_refresh = proc do
           begin
@@ -146,61 +147,6 @@ module Lita
       end
 
       private
-        class Node
-          attr_accessor :name, :dc, :environment, :fqdn
-
-          def self.from_chef_node(node)
-            new.tap do |n|
-              n.name = node.name
-              n.dc = if node['ec2']
-                       node['ec2']['placement_availability_zone']
-                     elsif node['cloud']
-                       node['cloud']['provider']
-                     end
-              n.environment = node.environment
-              n.fqdn = node['fqdn']
-            end
-          end
-
-          def render(level)
-            case level
-            when 1 then name
-            when 2 then "#{name} (#{dc})"
-            when 3 then "#{name} (#{dc}, #{environment})"
-            when 4 then "#{fqdn} (#{dc}, #{environment})"
-            end
-          end
-        end
-
-        class Enhancer
-          @@subclasses = []
-
-          @@start = "*"
-          @@end = "*"
-
-          def self.all
-            @@subclasses.select! {|x| x.weakref_alive? }
-            @@subclasses
-          end
-
-          def self.inherited(subclass)
-            @@subclasses << WeakRef.new(subclass)
-          end
-
-          def render(node, original, level)
-            node ? "#{@@start}#{node.render(level)}#{@@end}" : original
-          end
-
-          def max_level
-            4
-          end
-        end
-
-        require 'lita/handlers/enhancers/hostname_enhancer'
-        require 'lita/handlers/enhancers/instance_id_enhancer'
-        require 'lita/handlers/enhancers/ip_enhancer'
-        require 'lita/handlers/enhancers/mac_address_enhancer'
-
         # This mutex must be obtained to refresh the index
         REFRESH_MUTEX = Mutex.new unless defined?(REFRESH_MUTEX)
 
@@ -216,7 +162,9 @@ module Lita
         def refresh_index
           log.info { "Refreshing enhance index..." }
 
-          enhancers = Enhancer.all.map(&:new)
+          enhancers = Enhancer.all.map do |enhancer_klass|
+            enhancer_klass.new(redis)
+          end
 
           config.knife_configs.each do |_, config_path|
             index(config_path, enhancers)
@@ -248,6 +196,8 @@ module Lita
 
           query.search("node", "*:*") do |chef_node|
             node = Node.from_chef_node(chef_node)
+            node.store!(redis)
+
             enhancers.each {|e| e.index(chef_node, node) }
           end
         end
@@ -260,6 +210,9 @@ module Lita
           @@enhancers.map {|x| x.max_level }.max
         end
     end
+
+    require 'lita/handlers/enhance/node'
+    require 'lita/handlers/enhance/enhancer'
 
     Lita.register_handler(Enhance)
   end

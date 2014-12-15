@@ -1,11 +1,14 @@
+require 'lita/handlers/enhance/node_index'
+
 module Lita
   module Handlers
     class Enhance
       class InstanceIdEnhancer < Enhancer
         INSTANCE_ID_REGEX = /i-[0-9a-f]{8}/
 
-        def initialize
-          @nodes_by_instance_id = {}
+        def initialize(redis)
+          super
+          @nodes_by_instance_id = NodeIndex.new(redis, 'nodes_by_instance_id')
         end
 
         def index(chef_node, node)
@@ -16,7 +19,8 @@ module Lita
 
         def enhance!(string, level)
           string.gsub!(INSTANCE_ID_REGEX) do |instance_id|
-            render(@nodes_by_instance_id[instance_id], instance_id, level)
+            node = @nodes_by_instance_id[instance_id]
+            render(node, instance_id, level)
           end
         end
 

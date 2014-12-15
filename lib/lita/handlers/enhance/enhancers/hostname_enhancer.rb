@@ -1,12 +1,15 @@
+require 'lita/handlers/enhance/node_index'
+
 module Lita
   module Handlers
     class Enhance
       class HostnameEnhancer < Enhancer
         HOSTNAME_REGEX = /\b((([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)+([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]))\b/
 
-        def initialize
-          @nodes_by_hostname = {}
-          @nodes_by_short_hostnames = {}
+        def initialize(redis)
+          super
+          @nodes_by_hostname = NodeIndex.new(redis, 'nodes_by_hostname')
+          @nodes_by_short_hostname = NodeIndex.new(redis, 'nodes_by_short_hostname')
         end
 
         def index(chef_node, node)
@@ -25,19 +28,21 @@ module Lita
 
         def enhance!(string, level)
           string.gsub!(HOSTNAME_REGEX) do |hostname|
-            render(@nodes_by_hostname[hostname], hostname, level)
+            node = @nodes_by_hostname[hostname]
+            render(node, hostname, level)
           end
           string.gsub!(short_hostname_regex) do |hostname|
-            render(@nodes_by_short_hostnames[hostname], hostname, level)
+            node = @nodes_by_short_hostname[hostname]
+            render(node, hostname, level)
           end
         end
 
         def short_hostname_regex
-          @short_hostname_regex ||= /\b(?<!\*)#{Regexp.union(@nodes_by_short_hostnames.keys)}\b(?<!\*)/
+          @short_hostname_regex ||= /\b(?<!\*)#{Regexp.union(@nodes_by_short_hostname.keys)}\b(?<!\*)/
         end
 
         def to_s
-          "#{self.class.name}: #{@short_hostnames.size} short hostnames, #{@nodes_by_hostname.size} long hostnames indexed"
+          "#{self.class.name}: #{@nodes_by_short_hostname.size} short hostnames, #{@nodes_by_hostname.size} long hostnames indexed"
         end
 
         private
@@ -48,7 +53,7 @@ module Lita
           short_hostname = hostname.split('.')[0]
 
           @nodes_by_hostname[hostname] = node
-          @nodes_by_short_hostnames[short_hostname] = node
+          @nodes_by_short_hostname[short_hostname] = node
         end
       end
     end
