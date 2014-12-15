@@ -58,6 +58,12 @@ module Lita
           when 4 then "#{fqdn} (#{dc}, #{environment})"
           end
         end
+
+        # True if this node appears to be gone away because we haven't seen it
+        # for a while.
+        def old?
+          last_seen_at < (Time.now - 6 * 60 * 60)
+        end
       end
     end
   end

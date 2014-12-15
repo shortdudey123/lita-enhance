@@ -40,4 +40,11 @@ describe Lita::Handlers::Enhance::Node do
     expect(node.render(3)).to eq('box01 (us-west-2b, _default)')
     expect(node.render(4)).to eq('box01.example.com (us-west-2b, _default)')
   end
+
+  it 'should know if it is old' do
+    expect(node.old?).to be(false)
+
+    node.last_seen_at = Time.now - 24 * 60 * 60
+    expect(node.old?).to be(true)
+  end
 end
