@@ -38,7 +38,8 @@ describe Lita::Handlers::Enhance::Node do
     expect(node.render(1)).to eq('box01')
     expect(node.render(2)).to eq('box01 (us-west-2b)')
     expect(node.render(3)).to eq('box01 (us-west-2b, _default)')
-    expect(node.render(4)).to eq('box01.example.com (us-west-2b, _default)')
+    expect(node.render(4)).to match /box01 \(us-west-2b, _default, last seen .*\)/
+    expect(node.render(5)).to match /box01\.example\.com \(us-west-2b, _default, last seen .*\)/
   end
 
   it 'should know if it is old' do

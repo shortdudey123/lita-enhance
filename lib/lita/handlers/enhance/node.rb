@@ -55,7 +55,8 @@ module Lita
           when 1 then name
           when 2 then "#{name} (#{dc})"
           when 3 then "#{name} (#{dc}, #{environment})"
-          when 4 then "#{fqdn} (#{dc}, #{environment})"
+          when 4 then "#{name} (#{dc}, #{environment}, last seen #{last_seen_at})"
+          when 5 then "#{fqdn} (#{dc}, #{environment}, last seen #{last_seen_at})"
           end
         end
 

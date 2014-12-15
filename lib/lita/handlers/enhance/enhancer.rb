@@ -33,7 +33,7 @@ module Lita
         end
 
         def max_level
-          4
+          5
         end
 
         private
