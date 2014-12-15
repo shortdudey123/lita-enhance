@@ -2,7 +2,7 @@ module Lita
   module Handlers
     class Enhance < Handler
       class Node
-        attr_accessor :name, :dc, :environment, :fqdn
+        attr_accessor :name, :dc, :environment, :fqdn, :last_seen_at
 
         def self.from_chef_node(node)
           new.tap do |n|
@@ -14,6 +14,7 @@ module Lita
                    end
             n.environment = node.environment
             n.fqdn = node['fqdn']
+            n.last_seen_at = Time.now
           end
         end
 
@@ -24,11 +25,7 @@ module Lita
           node_data_json = redis.hget('nodes', name)
           if node_data_json
             node_data = JSON.parse(node_data_json)
-            node = self.new
-
-            node_data.each do |key, value|
-              node.send("#{key}=", value)
-            end
+            node = self.from_json(node_data)
           end
 
           node
@@ -40,8 +37,17 @@ module Lita
           redis.hset('nodes', self.name, node_data_json)
         end
 
+        def self.from_json(json)
+          self.new.tap do |node|
+            %w(name dc environment fqdn).each do |field|
+              node.send("#{field}=", json[field])
+            end
+            node.last_seen_at = Time.parse(json['last_seen_at']) if json['last_seen_at']
+          end
+        end
+
         def as_json
-          {name: name, dc: dc, environment: environment, fqdn: fqdn}
+          {name: name, dc: dc, environment: environment, fqdn: fqdn, last_seen_at: last_seen_at}
         end
 
         def render(level)

@@ -11,15 +11,18 @@ describe Lita::Handlers::Enhance::Node do
     expect(node.dc).to eq('us-west-2b')
     expect(node.environment).to eq('_default')
     expect(node.fqdn).to eq('box01.example.com')
+    expect(node.last_seen_at.to_f).to be_within(5).of(Time.now.to_f)
   end
 
   it "should be able to save it's state in a JSON blob" do
-    expect(node.as_json).to eq(
+    node_json = node.as_json
+    expect(node_json).to include(
       name: 'box01',
       dc: 'us-west-2b',
       environment: '_default',
       fqdn: 'box01.example.com'
     )
+    expect(node_json[:last_seen_at]).to_not be_nil
   end
 
   it "should be able to store and load itself" do
@@ -28,5 +31,6 @@ describe Lita::Handlers::Enhance::Node do
     new_node = Lita::Handlers::Enhance::Node.load(redis, 'box01')
     expect(new_node).to_not be_nil
     expect(new_node.name).to eq(node.name)
+    expect(new_node.last_seen_at).to be_kind_of(Time)
   end
 end
