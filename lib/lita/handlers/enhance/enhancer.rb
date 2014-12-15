@@ -6,8 +6,8 @@ module Lita
       class Enhancer
         @@subclasses = []
 
-        @@start = "*"
-        @@end = "*"
+        @@current = %w(* *)
+        @@old = %w(¿ ?)
 
         def self.all
           @@subclasses.select! {|x| x.weakref_alive? }
@@ -25,11 +25,24 @@ module Lita
         end
 
         def render(node, original, level)
-          node ? "#{@@start}#{node.render(level)}#{@@end}" : original
+          if node
+            "#{start_mark(node)}#{node.render(level)}#{end_mark(node)}"
+          else
+            original
+          end
         end
 
         def max_level
-          4
+          5
+        end
+
+        private
+        def start_mark(node)
+          node.old? ? @@old.first : @@current.first
+        end
+
+        def end_mark(node)
+          node.old? ? @@old.last : @@current.last
         end
       end
 
