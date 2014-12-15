@@ -1,5 +1,7 @@
 require "spec_helper"
 
+require 'lita/handlers/enhance/enhancer_example'
+
 describe Lita::Handlers::Enhance::MacAddressEnhancer do
   include_context 'mocks'
   include_context 'redis'
@@ -11,6 +13,8 @@ describe Lita::Handlers::Enhance::MacAddressEnhancer do
       enhancer.index(chef_node, node)
     end
   end
+
+  it_should_behave_like 'an enhancer'
 
   it 'should enhance a string with MAC addresses in it' do
     message = 'before 22:00:0A:FE:4A:79 F2:3C:91:56:A2:00 after'

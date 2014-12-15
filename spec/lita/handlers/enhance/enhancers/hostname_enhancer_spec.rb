@@ -1,5 +1,7 @@
 require "spec_helper"
 
+require 'lita/handlers/enhance/enhancer_example'
+
 describe Lita::Handlers::Enhance::HostnameEnhancer do
   include_context 'mocks'
   include_context 'redis'
@@ -11,6 +13,8 @@ describe Lita::Handlers::Enhance::HostnameEnhancer do
       enhancer.index(chef_node, node)
     end
   end
+
+  it_should_behave_like 'an enhancer'
 
   it 'should enhance a string with an EC2 public hostname in it' do
     message = 'before ec2-54-214-188-37.us-west-2.compute.amazonaws.com after'

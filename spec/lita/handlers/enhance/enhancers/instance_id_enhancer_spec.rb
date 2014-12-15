@@ -1,5 +1,7 @@
 require "spec_helper"
 
+require 'lita/handlers/enhance/enhancer_example'
+
 describe Lita::Handlers::Enhance::InstanceIdEnhancer do
   include_context 'mocks'
   include_context 'redis'
@@ -11,6 +13,8 @@ describe Lita::Handlers::Enhance::InstanceIdEnhancer do
       enhancer.index(chef_node, node)
     end
   end
+
+  it_should_behave_like 'an enhancer'
 
   it 'should enhance a string with EC2 instance IDs in it' do
     message = 'before i-fe4cddcb i-f4ff6aff after'

@@ -1,5 +1,7 @@
 require "spec_helper"
 
+require 'lita/handlers/enhance/enhancer_example'
+
 describe Lita::Handlers::Enhance::IpEnhancer do
   include_context 'mocks'
   include_context 'redis'
@@ -11,6 +13,8 @@ describe Lita::Handlers::Enhance::IpEnhancer do
       enhancer.index(chef_node, node)
     end
   end
+
+  it_should_behave_like 'an enhancer'
 
   it 'should enhance a string with EC2 external IPs in it' do
     message = 'before 54.214.188.37 184.169.229.1 after'
