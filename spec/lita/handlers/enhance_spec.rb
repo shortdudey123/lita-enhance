@@ -20,7 +20,7 @@ describe Lita::Handlers::Enhance, lita_handler: true do
     send_command('refresh enhance')
 
     # Give the timer a chance to run
-    Thread.pass
+    sleep(0.5)
 
     expect(replies).to include('Will refresh enhance index...')
     expect(replies).to include('(successful) Refreshed enhance index')

@@ -1,5 +1,8 @@
-require 'chef'
 require 'thread'
+
+require 'lita/handlers/enhance/chef_indexer'
+require 'lita/handlers/enhance/node'
+require 'lita/handlers/enhance/enhancer'
 
 module Lita
   module Handlers
@@ -41,7 +44,7 @@ module Lita
       end
 
       def setup_background_refresh(payload)
-        @@last_refreshed = nil
+        @@chef_indexer = ChefIndexer.new(redis, config.knife_configs)
         @@enhancers = Enhancer.all.map do |enhancer_klass|
           enhancer_klass.new(redis)
         end
@@ -137,7 +140,7 @@ module Lita
 
       def stats(response)
         INDEX_MUTEX.synchronize do
-          response_msg = "Last refreshed: #{@@last_refreshed || 'never'}"
+          response_msg = "Last refreshed: #{@@chef_indexer.last_refreshed || 'never'}"
           response_msg += ("\nRefreshes every %.2f minutes" % (config.refresh_interval / 60.0))
           @@enhancers.each do |e|
             response_msg += "\n#{e}"
@@ -155,50 +158,7 @@ module Lita
 
         def lock_and_refresh_index
           REFRESH_MUTEX.synchronize do
-            refresh_index
-          end
-        end
-
-        def refresh_index
-          log.info { "Refreshing enhance index..." }
-
-          enhancers = Enhancer.all.map do |enhancer_klass|
-            enhancer_klass.new(redis)
-          end
-
-          config.knife_configs.each do |_, config_path|
-            index(config_path, enhancers)
-          end
-
-          INDEX_MUTEX.synchronize do
-            @@last_refreshed = Time.now
-            @@enhancers = enhancers
-
-            log.info { "Refreshed enhance index" }
-
-            @@enhancers.each do |e|
-              log.debug { e.to_s }
-            end
-          end
-
-          # Refreshing the index pulls a lot of large objects into memory,
-          # forcing a GC run to ensure that our heap doesn't grow aggressively.
-          GC.start
-
-          nil
-        end
-
-        def index(chef_config_path, enhancers)
-          log.info { "Indexing #{chef_config_path}" }
-
-          Chef::Config.from_file(File.expand_path(chef_config_path))
-          query = Chef::Search::Query.new
-
-          query.search("node", "*:*") do |chef_node|
-            node = Node.from_chef_node(chef_node)
-            node.store!(redis)
-
-            enhancers.each {|e| e.index(chef_node, node) }
+            @@chef_indexer.refresh
           end
         end
 
@@ -211,8 +171,6 @@ module Lita
         end
     end
 
-    require 'lita/handlers/enhance/node'
-    require 'lita/handlers/enhance/enhancer'
 
     Lita.register_handler(Enhance)
   end
