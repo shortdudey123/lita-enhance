@@ -3,6 +3,7 @@ require 'thread'
 require 'lita/handlers/enhance/chef_indexer'
 require 'lita/handlers/enhance/node'
 require 'lita/handlers/enhance/enhancer'
+require 'lita/handlers/enhance/session'
 
 module Lita
   module Handlers
@@ -78,25 +79,21 @@ module Lita
       end
 
       def enhance(response)
-        key = last_message_key(response)
-        level_key = key + ":level"
-
         level = response.matches[0][1]
+        level = level.to_i if level
+
         blurry_string = response.matches[0][3]
         return if blurry_string == "stats"
 
+        key = last_message_key(response)
+        level_key = key + ":level"
+
+        session = Session.new(redis, key, config.blurry_message_ttl)
+
         if blurry_string && !blurry_string.empty?
-          redis.setex(key, config.blurry_message_ttl, blurry_string)
-
-          if level
-            level = level.to_i
-          else
-            level = 1
-          end
-
-          redis.setex(level_key, config.blurry_message_ttl, level.to_i)
+          level = 1 unless level
         else
-          blurry_string = redis.get(key)
+          blurry_string = session.last_message
         end
 
         unless blurry_string
@@ -104,16 +101,7 @@ module Lita
           return
         end
 
-        if level
-          level = level.to_i
-          redis.setex(level_key, config.blurry_message_ttl, level)
-        else
-          log.debug { "Getting level from redis" }
-          level = redis.incr(level_key)
-        end
-
-        redis.expire(key, config.blurry_message_ttl)
-        redis.expire(level_key, config.blurry_message_ttl)
+        level = session.last_level + 1 unless level
 
         if level > max_level
           response.reply("Cannot enhance above level #{max_level}")
@@ -123,13 +111,7 @@ module Lita
           return
         end
 
-        log.debug { "Enhancing (level: #{level}):\n#{blurry_string}" }
-
-        INDEX_MUTEX.synchronize do
-          @@enhancers.each do |e|
-            e.enhance!(blurry_string, level)
-          end
-        end
+        session.enhance!(blurry_string, level)
 
         if config.add_quote
           response.reply('/quote ' + blurry_string)
