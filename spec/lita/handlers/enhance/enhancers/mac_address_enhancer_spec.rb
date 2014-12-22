@@ -21,8 +21,8 @@ describe Lita::Handlers::Enhance::MacAddressEnhancer do
     message = 'before 22:00:0A:FE:4A:79 F2:3C:91:56:A2:00 after'
     substitutions = enhancer.enhance!(message, 1)
     expect(substitutions).to contain_exactly(
-      sub_klass.new(7..24, '*box01*'),
-      sub_klass.new(25..42, '*box03*')
+      sub_klass.new(7...24, '*box01*'),
+      sub_klass.new(25...42, '*box03*')
     )
   end
 

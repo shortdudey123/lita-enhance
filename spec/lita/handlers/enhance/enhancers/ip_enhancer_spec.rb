@@ -21,8 +21,8 @@ describe Lita::Handlers::Enhance::IpEnhancer do
     message = 'before 54.214.188.37 184.169.229.1 after'
     substitutions = enhancer.enhance!(message, 1)
     expect(substitutions).to contain_exactly(
-      sub_klass.new(7..20, '*box01*'),
-      sub_klass.new(21..34, '*box02*')
+      sub_klass.new(7...20, '*box01*'),
+      sub_klass.new(21...34, '*box02*')
     )
   end
 
@@ -30,8 +30,8 @@ describe Lita::Handlers::Enhance::IpEnhancer do
     message = 'before 10.254.74.121 10.196.75.1 after'
     substitutions = enhancer.enhance!(message, 1)
     expect(substitutions).to contain_exactly(
-      sub_klass.new(7..20, '*box01*'),
-      sub_klass.new(21..32, '*box02*')
+      sub_klass.new(7...20, '*box01*'),
+      sub_klass.new(21...32, '*box02*')
     )
   end
 
@@ -39,7 +39,7 @@ describe Lita::Handlers::Enhance::IpEnhancer do
     message = 'before 192.155.85.2 after'
     substitutions = enhancer.enhance!(message, 1)
     expect(substitutions).to contain_exactly(
-      sub_klass.new(7..19, '*box03*')
+      sub_klass.new(7...19, '*box03*')
     )
   end
 

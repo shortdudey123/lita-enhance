@@ -22,8 +22,9 @@ module Lita
         def enhance!(string, level)
           substitutions = []
           string.scan(MAC_ADDRESS_REGEX) do
-            mac_address = Regexp.last_match[0]
-            range = Range.new(*Regexp.last_match.offset(0))
+            match = Regexp.last_match
+            mac_address = match.to_s
+            range = (match.begin(0)...match.end(0))
 
             node = @nodes_by_mac_address[mac_address.downcase]
             if node

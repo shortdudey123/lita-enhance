@@ -19,8 +19,10 @@ module Lita
 
         def enhance!(string, level)
           substitutions = []
-          string.scan(INSTANCE_ID_REGEX) do |instance_id|
-            range = Range.new(*Regexp.last_match.offset(0))
+          string.scan(INSTANCE_ID_REGEX) do
+            match = Regexp.last_match
+            instance_id = match.to_s
+            range = (match.begin(0)...match.end(0))
 
             node = @nodes_by_instance_id[instance_id]
             if node

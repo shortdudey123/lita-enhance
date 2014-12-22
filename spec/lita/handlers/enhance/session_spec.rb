@@ -46,4 +46,16 @@ describe Lita::Handlers::Enhance::Session do
     session.enhance!(message, 2)
     expect(message).to eq('hello world *stg-web01 (us-west-2b)*')
   end
+
+  it 'should be able to enhance multiple items' do
+    message = 'box01 box02'
+    session.enhance!(message, 2)
+    expect(message).to eq('*box01 (us-west-2b)* *box02 (us-west-1c)*')
+  end
+
+  it 'should be able to correctly apply substitutions that result in shorter text' do
+    message = 'before 22:00:0A:FE:4A:79 F2:3C:91:56:A2:00 after'
+    session.enhance!(message, 1)
+    expect(message).to eq('before *box01* *box03* after')
+  end
 end

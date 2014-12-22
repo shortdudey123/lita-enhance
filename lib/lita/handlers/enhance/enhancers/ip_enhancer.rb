@@ -34,8 +34,9 @@ module Lita
         def enhance!(string, level)
           substitutions = []
           string.scan(IP_REGEX) do 
-            ip = Regexp.last_match[0]
-            range = Range.new(*Regexp.last_match.offset(0))
+            match = Regexp.last_match
+            ip = match.to_s
+            range = (match.begin(0)...match.end(0))
 
             node = @nodes_by_ip[ip]
             if node

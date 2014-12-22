@@ -51,10 +51,11 @@ module Lita
 
           substitutions.sort! {|a,b| a.range.begin <=> b.range.begin }
 
-          additional_offset = 0
+          current_offset = 0
           substitutions.each do |sub|
-            message[sub.range.begin + additional_offset, sub.range.size] = sub.new_text
-            additional_offset += sub.range.size
+            message[sub.range.begin + current_offset, sub.range.size] = sub.new_text
+
+            current_offset += sub.new_text.length - sub.range.size
           end
 
           message

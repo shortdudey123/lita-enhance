@@ -30,8 +30,9 @@ module Lita
         def enhance!(string, level)
           substitutions = []
           string.scan(HOSTNAME_REGEX) do
-            hostname = Regexp.last_match[0]
-            range = Range.new(*Regexp.last_match.offset(0))
+            match = Regexp.last_match
+            hostname = match.to_s
+            range = (match.begin(0)...match.end(0))
 
             node = @nodes_by_hostname[hostname]
             if node
@@ -40,8 +41,9 @@ module Lita
             end
           end
           string.scan(short_hostname_regex) do
-            hostname = Regexp.last_match[0]
-            range = Range.new(*Regexp.last_match.offset(0))
+            match = Regexp.last_match
+            hostname = match.to_s
+            range = (match.begin(0)...match.end(0))
 
             node = @nodes_by_short_hostname[hostname]
             if node

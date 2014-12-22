@@ -21,8 +21,8 @@ describe Lita::Handlers::Enhance::InstanceIdEnhancer do
     message = 'before i-fe4cddcb i-f4ff6aff after'
     substitutions = enhancer.enhance!(message, 1)
     expect(substitutions).to contain_exactly(
-      sub_klass.new(7..17, '*box01*'),
-      sub_klass.new(18..28, '*box02*')
+      sub_klass.new(7...17, '*box01*'),
+      sub_klass.new(18...28, '*box02*')
     )
   end
 
