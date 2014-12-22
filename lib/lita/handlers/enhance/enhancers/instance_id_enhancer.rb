@@ -24,7 +24,7 @@ module Lita
 
             node = @nodes_by_instance_id[instance_id]
             if node
-              new_text = render(node, instance_id, level)
+              new_text = render(node, level)
               substitutions << Substitution.new(range, new_text)
             end
           end

@@ -35,7 +35,7 @@ module Lita
 
             node = @nodes_by_hostname[hostname]
             if node
-              new_text = render(node, hostname, level)
+              new_text = render(node, level)
               substitutions << Substitution.new(range, new_text)
             end
           end
@@ -45,7 +45,7 @@ module Lita
 
             node = @nodes_by_short_hostname[hostname]
             if node
-              new_text = render(node, hostname, level)
+              new_text = render(node, level)
               sub = Substitution.new(range, new_text)
               unless substitutions.any? {|s| s.overlap?(sub) }
                 substitutions << Substitution.new(range, new_text)

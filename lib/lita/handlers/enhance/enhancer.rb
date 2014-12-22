@@ -24,12 +24,8 @@ module Lita
           @redis = redis
         end
 
-        def render(node, original, level)
-          if node
-            "#{start_mark(node)}#{node.render(level)}#{end_mark(node)}"
-          else
-            original
-          end
+        def render(node, level)
+          "#{start_mark(node)}#{node.render(level)}#{end_mark(node)}"
         end
 
         def max_level

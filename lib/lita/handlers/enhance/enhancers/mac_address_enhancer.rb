@@ -27,7 +27,7 @@ module Lita
 
             node = @nodes_by_mac_address[mac_address.downcase]
             if node
-              new_text = render(node, mac_address, level)
+              new_text = render(node, level)
               substitutions << Substitution.new(range, new_text)
             end
           end

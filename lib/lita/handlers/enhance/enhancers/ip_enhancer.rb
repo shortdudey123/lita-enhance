@@ -39,7 +39,7 @@ module Lita
 
             node = @nodes_by_ip[ip]
             if node
-              new_text = render(node, ip, level)
+              new_text = render(node, level)
               substitutions << Substitution.new(range, new_text)
             end
           end
