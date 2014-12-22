@@ -45,9 +45,19 @@ module Lita
             enhancer_klass.new(redis)
           end
 
-          @enhancers.each do |e|
+          substitutions = @enhancers.flat_map do |e|
             e.enhance!(message, level)
           end
+
+          substitutions.sort! {|a,b| a.range.begin <=> b.range.begin }
+
+          additional_offset = 0
+          substitutions.each do |sub|
+            message[sub.range.begin + additional_offset, sub.range.size] = sub.new_text
+            additional_offset += sub.range.size
+          end
+
+          message
         end
 
         private

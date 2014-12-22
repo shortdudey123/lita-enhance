@@ -20,10 +20,18 @@ module Lita
         end
 
         def enhance!(string, level)
-          string.gsub!(MAC_ADDRESS_REGEX) do |mac_address|
+          substitutions = []
+          string.scan(MAC_ADDRESS_REGEX) do
+            mac_address = Regexp.last_match[0]
+            range = Range.new(*Regexp.last_match.offset(0))
+
             node = @nodes_by_mac_address[mac_address.downcase]
-            render(node, mac_address, level)
+            if node
+              new_text = render(node, mac_address, level)
+              substitutions << Substitution.new(range, new_text)
+            end
           end
+          substitutions
         end
 
         def to_s

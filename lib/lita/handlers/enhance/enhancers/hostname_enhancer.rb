@@ -1,10 +1,11 @@
 require 'lita/handlers/enhance/node_index'
+require 'lita/handlers/enhance/enhancer'
 
 module Lita
   module Handlers
     class Enhance
       class HostnameEnhancer < Enhancer
-        HOSTNAME_REGEX = /\b((([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)+([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]))\b/
+        HOSTNAME_REGEX = /\b(?:(?:(?:[a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)+(?:[A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9]))\b/
 
         def initialize(redis)
           super
@@ -27,14 +28,32 @@ module Lita
         end
 
         def enhance!(string, level)
-          string.gsub!(HOSTNAME_REGEX) do |hostname|
+          substitutions = []
+          string.scan(HOSTNAME_REGEX) do
+            hostname = Regexp.last_match[0]
+            range = Range.new(*Regexp.last_match.offset(0))
+
             node = @nodes_by_hostname[hostname]
-            render(node, hostname, level)
+            if node
+              new_text = render(node, hostname, level)
+              substitutions << Substitution.new(range, new_text)
+            end
           end
-          string.gsub!(short_hostname_regex) do |hostname|
+          string.scan(short_hostname_regex) do
+            hostname = Regexp.last_match[0]
+            range = Range.new(*Regexp.last_match.offset(0))
+
             node = @nodes_by_short_hostname[hostname]
-            render(node, hostname, level)
+            if node
+              new_text = render(node, hostname, level)
+              sub = Substitution.new(range, new_text)
+              unless substitutions.any? {|s| s.overlap?(sub) }
+                substitutions << Substitution.new(range, new_text)
+              end
+            end
           end
+
+          substitutions
         end
 
         def short_hostname_regex

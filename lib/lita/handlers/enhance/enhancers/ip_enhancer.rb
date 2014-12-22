@@ -4,7 +4,7 @@ module Lita
   module Handlers
     class Enhance
       class IpEnhancer < Enhancer
-        IP_REGEX = /([0-9]{1,3}\.){3}[0-9]{1,3}/
+        IP_REGEX = /(?:[0-9]{1,3}\.){3}[0-9]{1,3}/
 
         def initialize(redis)
           super
@@ -32,10 +32,18 @@ module Lita
         end
 
         def enhance!(string, level)
-          string.gsub!(IP_REGEX) do |ip|
+          substitutions = []
+          string.scan(IP_REGEX) do 
+            ip = Regexp.last_match[0]
+            range = Range.new(*Regexp.last_match.offset(0))
+
             node = @nodes_by_ip[ip]
-            render(node, ip, level)
+            if node
+              new_text = render(node, ip, level)
+              substitutions << Substitution.new(range, new_text)
+            end
           end
+          substitutions
         end
 
         def to_s
