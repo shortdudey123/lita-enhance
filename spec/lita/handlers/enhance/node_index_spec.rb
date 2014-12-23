@@ -28,6 +28,6 @@ describe Lita::Handlers::Enhance::NodeIndex do
     nodes.each do |node|
       index[node.name] = node
     end
-    expect(index.size).to eq(3)
+    expect(index.size).to eq(nodes.length)
   end
 end

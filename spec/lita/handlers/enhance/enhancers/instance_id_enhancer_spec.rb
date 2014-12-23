@@ -7,6 +7,7 @@ describe Lita::Handlers::Enhance::InstanceIdEnhancer do
   include_context 'redis'
 
   let(:enhancer) { Lita::Handlers::Enhance::InstanceIdEnhancer.new(redis) }
+  let(:sub_klass) { Lita::Handlers::Enhance::Substitution }
 
   before do
     nodes_and_chef_nodes.each do |node, chef_node|
@@ -18,8 +19,17 @@ describe Lita::Handlers::Enhance::InstanceIdEnhancer do
 
   it 'should enhance a string with EC2 instance IDs in it' do
     message = 'before i-fe4cddcb i-f4ff6aff after'
-    enhancer.enhance!(message, 1)
-    expect(message).to eq('before *box01* *box02* after')
+    substitutions = enhancer.enhance!(message, 1)
+    expect(substitutions).to contain_exactly(
+      sub_klass.new(7...17, '*box01*'),
+      sub_klass.new(18...28, '*box02*')
+    )
+  end
+
+  it 'should not enhance an unrecognized EC2 instance ID' do
+    message = 'i-f00bac12'
+    substitutions = enhancer.enhance!(message, 1)
+    expect(substitutions).to be_empty
   end
 
   it 'should return a custom response to to_s' do

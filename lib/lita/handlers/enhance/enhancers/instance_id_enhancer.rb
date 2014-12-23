@@ -18,10 +18,19 @@ module Lita
         end
 
         def enhance!(string, level)
-          string.gsub!(INSTANCE_ID_REGEX) do |instance_id|
+          substitutions = []
+          string.scan(INSTANCE_ID_REGEX) do
+            match = Regexp.last_match
+            instance_id = match.to_s
+            range = (match.begin(0)...match.end(0))
+
             node = @nodes_by_instance_id[instance_id]
-            render(node, instance_id, level)
+            if node
+              new_text = render(node, level)
+              substitutions << Substitution.new(range, new_text)
+            end
           end
+          substitutions
         end
 
         def to_s

@@ -11,19 +11,21 @@ RSpec.shared_context 'mocks' do
   end
 
   let(:west2_chef_node) do
-    Chef::Node.json_create(JSON.parse(spec_data('box01.json')))
+    chef_nodes.detect {|n| n.name == 'box01' }
   end
 
   let(:west1_chef_node) do
-    Chef::Node.json_create(JSON.parse(spec_data('box02.json')))
+    chef_nodes.detect {|n| n.name == 'box02' }
   end
 
   let(:linode_chef_node) do
-    Chef::Node.json_create(JSON.parse(spec_data('box03.json')))
+    chef_nodes.detect {|n| n.name == 'box03' }
   end
 
   let(:chef_nodes) do
-    [west2_chef_node, west1_chef_node, linode_chef_node]
+    Dir['spec/data/*.json'].map do |node_json|
+      Chef::Node.json_create(JSON.parse(IO.read(node_json)))
+    end
   end
 
   let(:nodes) do

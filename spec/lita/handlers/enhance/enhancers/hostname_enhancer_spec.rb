@@ -7,6 +7,7 @@ describe Lita::Handlers::Enhance::HostnameEnhancer do
   include_context 'redis'
 
   let(:enhancer) { Lita::Handlers::Enhance::HostnameEnhancer.new(redis) }
+  let(:sub_klass) { Lita::Handlers::Enhance::Substitution }
 
   before do
     nodes_and_chef_nodes.each do |node, chef_node|
@@ -18,38 +19,44 @@ describe Lita::Handlers::Enhance::HostnameEnhancer do
 
   it 'should enhance a string with an EC2 public hostname in it' do
     message = 'before ec2-54-214-188-37.us-west-2.compute.amazonaws.com after'
-    enhancer.enhance!(message, 1)
-    expect(message).to eq('before *box01* after')
+    substitutions = enhancer.enhance!(message, 1)
+    expect(substitutions).to eq [sub_klass.new(7...56, '*box01*')]
   end
 
   it 'should enhance a string with an EC2 short public hostname in it' do
     message = 'before ec2-54-214-188-37 after'
-    enhancer.enhance!(message, 1)
-    expect(message).to eq('before *box01* after')
+    substitutions = enhancer.enhance!(message, 1)
+    expect(substitutions).to eq [sub_klass.new(7...24, '*box01*')]
   end
 
   it 'should enhance a string with an EC2 localhost hostname in it' do
     message = 'before ip-10-254-74-121.us-west-2.compute.internal after'
-    enhancer.enhance!(message, 1)
-    expect(message).to eq('before *box01* after')
+    substitutions = enhancer.enhance!(message, 1)
+    expect(substitutions).to eq [sub_klass.new(7...50, '*box01*')]
   end
 
   it 'should enhance a string with an EC2 localhost hostname in it' do
     message = 'before ip-10-254-74-121 after'
-    enhancer.enhance!(message, 1)
-    expect(message).to eq('before *box01* after')
+    substitutions = enhancer.enhance!(message, 1)
+    expect(substitutions).to eq [sub_klass.new(7...23, '*box01*')]
   end
 
   it 'should enhance a string with a custom long hostname in it' do
     message = 'before box01.example.com after'
-    enhancer.enhance!(message, 1)
-    expect(message).to eq('before *box01* after')
+    substitutions = enhancer.enhance!(message, 1)
+    expect(substitutions).to eq [sub_klass.new(7...24, '*box01*')]
   end
 
   it 'should enhance a string with a custom short hostname in it' do
     message = 'before box01 after'
-    enhancer.enhance!(message, 1)
-    expect(message).to eq('before *box01* after')
+    substitutions = enhancer.enhance!(message, 1)
+    expect(substitutions).to eq [sub_klass.new(7...12, '*box01*')]
+  end
+
+  it 'should not enhance a string with an unknown hostname' do
+    message = 'foo.bar.com'
+    substitutions = enhancer.enhance!(message, 1)
+    expect(substitutions).to be_empty
   end
 
   it 'should return a custom response to to_s' do

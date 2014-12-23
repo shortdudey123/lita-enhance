@@ -1,0 +1,89 @@
+{
+  "name": "stg-web01",
+  "chef_environment": "_default",
+  "run_list": [
+    "role[web]"
+  ],
+  "normal": {
+    "tags": [
+
+    ]
+  },
+  "default": {
+  },
+  "override": {
+  },
+  "automatic": {
+    "ipaddress": "10.254.74.122",
+    "macaddress": "22:00:0A:FE:4A:80",
+    "ec2": {
+      "ami_id": "ami-f6ec60c6",
+      "ami_launch_index": "0",
+      "ami_manifest_path": "ubuntu-us-west-2/images/ubuntu-lucid-10.04-amd64-server-20120403.manifest.xml",
+      "block_device_mapping_ami": "sda1",
+      "block_device_mapping_ephemeral0": "sda2",
+      "block_device_mapping_root": "/dev/sda1",
+      "block_device_mapping_swap": "sda3",
+      "hostname": "ip-10-254-74-122.us-west-2.compute.internal",
+      "instance_action": "none",
+      "instance_id": "i-fe4cddcc",
+      "instance_type": "m1.small",
+      "kernel_id": "aki-ace26f9c",
+      "local_hostname": "ip-10-254-74-122.us-west-2.compute.internal",
+      "local_ipv4": "10.254.74.122",
+      "mac": "22:00:0A:FE:4A:80",
+      "metrics_vhostmd": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+      "network_interfaces_macs": {
+        "22:00:0a:fe:4a:80": {
+          "device_number": "0",
+          "local_hostname": "ip-10-254-74-122.us-west-2.compute.internal",
+          "local_ipv4s": "10.254.74.122",
+          "mac": "22:00:0a:fe:4a:80",
+          "owner_id": "622089341825",
+          "public_hostname": "ec2-54-214-188-38.us-west-2.compute.amazonaws.com",
+          "public_ipv4s": "54.214.188.38"
+        }
+      },
+      "placement_availability_zone": "us-west-2b",
+      "profile": "default-paravirtual",
+      "public_hostname": "ec2-54-214-188-38.us-west-2.compute.amazonaws.com",
+      "public_ipv4": "54.214.188.38",
+      "reservation_id": "r-994854ac",
+      "security_groups": [
+        "web"
+      ],
+      "userdata": null
+    },
+    "cloud": {
+      "public_ips": [
+        "54.214.188.38"
+      ],
+      "private_ips": [
+        "10.254.74.122"
+      ],
+      "public_ipv4": "54.214.188.38",
+      "public_hostname": "ec2-54-214-188-38.us-west-2.compute.amazonaws.com",
+      "local_ipv4": "10.254.74.122",
+      "local_hostname": "ip-10-254-74-122.us-west-2.compute.internal",
+      "provider": "ec2"
+    },
+    "cloud_v2": {
+      "public_ipv4_addrs": [
+        "54.214.188.38"
+      ],
+      "local_ipv4_addrs": [
+        "10.254.74.122"
+      ],
+      "provider": "ec2",
+      "public_hostname": "ec2-54-214-188-38.us-west-2.compute.amazonaws.com",
+      "local_hostname": "ip-10-254-74-122.us-west-2.compute.internal",
+      "public_ipv4": "54.214.188.38",
+      "local_ipv4": "10.254.74.122"
+    },
+    "hostname": "stg-web01",
+    "machinename": "stg-web01",
+    "fqdn": "stg-web01.example.com",
+    "domain": "example.com"
+  }
+}
+

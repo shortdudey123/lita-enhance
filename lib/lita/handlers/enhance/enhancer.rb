@@ -24,12 +24,8 @@ module Lita
           @redis = redis
         end
 
-        def render(node, original, level)
-          if node
-            "#{start_mark(node)}#{node.render(level)}#{end_mark(node)}"
-          else
-            original
-          end
+        def render(node, level)
+          "#{start_mark(node)}#{node.render(level)}#{end_mark(node)}"
         end
 
         def max_level
@@ -46,9 +42,15 @@ module Lita
         end
       end
 
-      require 'lita/handlers/enhance/enhancers/hostname_enhancer'
+      class Substitution < Struct.new(:range, :new_text)
+        def overlap?(other)
+          range.cover?(other.range.begin) || other.range.cover?(range.end)
+        end
+      end
+
       require 'lita/handlers/enhance/enhancers/instance_id_enhancer'
       require 'lita/handlers/enhance/enhancers/ip_enhancer'
+      require 'lita/handlers/enhance/enhancers/hostname_enhancer'
       require 'lita/handlers/enhance/enhancers/mac_address_enhancer'
     end
   end
