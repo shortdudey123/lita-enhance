@@ -13,18 +13,8 @@ module Lita
           @nodes_by_short_hostname = NodeIndex.new(redis, 'nodes_by_short_hostname')
         end
 
-        def index(chef_node, node)
-          map_hostname_to_node(chef_node['fqdn'], node)
-
-          if chef_node['cloud']
-            map_hostname_to_node(chef_node['cloud']['local_hostname'], node)
-            map_hostname_to_node(chef_node['cloud']['public_hostname'], node)
-          end
-
-          if chef_node['cloud_v2']
-            map_hostname_to_node(chef_node['cloud_v2']['local_hostname'], node)
-            map_hostname_to_node(chef_node['cloud_v2']['public_hostname'], node)
-          end
+        def index(hostname, node)
+          map_hostname_to_node(hostname, node)
         end
 
         def enhance!(string, level)

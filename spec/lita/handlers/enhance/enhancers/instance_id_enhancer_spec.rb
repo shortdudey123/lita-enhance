@@ -3,17 +3,10 @@ require "spec_helper"
 require 'lita/handlers/enhance/enhancer_example'
 
 describe Lita::Handlers::Enhance::InstanceIdEnhancer do
-  include_context 'mocks'
-  include_context 'redis'
+  include_context 'indexed'
 
   let(:enhancer) { Lita::Handlers::Enhance::InstanceIdEnhancer.new(redis) }
   let(:sub_klass) { Lita::Handlers::Enhance::Substitution }
-
-  before do
-    nodes_and_chef_nodes.each do |node, chef_node|
-      enhancer.index(chef_node, node)
-    end
-  end
 
   it_should_behave_like 'an enhancer'
 

@@ -13,10 +13,8 @@ module Lita
           @nodes_by_mac_address = NodeIndex.new(redis, 'nodes_by_mac_address')
         end
 
-        def index(chef_node, node)
-          if chef_node['macaddress']
-            @nodes_by_mac_address[chef_node['macaddress'].downcase] = node
-          end
+        def index(mac_address, node)
+          @nodes_by_mac_address[mac_address.downcase] = node
         end
 
         def enhance!(string, level)

@@ -11,10 +11,8 @@ module Lita
           @nodes_by_instance_id = NodeIndex.new(redis, 'nodes_by_instance_id')
         end
 
-        def index(chef_node, node)
-          if chef_node['ec2']
-            @nodes_by_instance_id[chef_node['ec2']['instance_id']] = node
-          end
+        def index(instance_id, node)
+          @nodes_by_instance_id[instance_id] = node
         end
 
         def enhance!(string, level)
