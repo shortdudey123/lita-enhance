@@ -48,3 +48,16 @@ RSpec.shared_context 'redis' do
     redis.flushdb
   end
 end
+
+RSpec.shared_context 'indexed' do
+  include_context 'mocks'
+  include_context 'redis'
+
+  let(:chef_indexer) { Lita::Handlers::Enhance::ChefIndexer.new(redis, {}) }
+
+  before do
+    nodes_and_chef_nodes.each do |node, chef_node|
+      chef_indexer.index_chef_node(chef_node, node)
+    end
+  end
+end

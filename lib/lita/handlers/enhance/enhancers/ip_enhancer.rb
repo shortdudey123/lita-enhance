@@ -11,24 +11,8 @@ module Lita
           @nodes_by_ip = NodeIndex.new(redis, 'nodes_by_ip')
         end
 
-        def index(chef_node, node)
-          @nodes_by_ip[chef_node['ipaddress']] = node
-
-          if chef_node['cloud']
-            @nodes_by_ip[chef_node['cloud']['local_ipv4']] = node
-            @nodes_by_ip[chef_node['cloud']['public_ipv4']] = node
-          end
-
-          if chef_node['cloud_v2']
-            if chef_node['cloud_v2']['public_ipv4_addrs']
-              ips = chef_node['cloud_v2']['public_ipv4_addrs']
-              ips.each {|ip| @nodes_by_ip[ip] = node }
-            end
-            if chef_node['cloud_v2']['local_ipv4_addrs']
-              ips = chef_node['cloud_v2']['local_ipv4_addrs']
-              ips.each {|ip| @nodes_by_ip[ip] = node }
-            end
-          end
+        def index(ip, node)
+          @nodes_by_ip[ip] = node
         end
 
         def enhance!(string, level)

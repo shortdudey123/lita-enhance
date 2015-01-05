@@ -1,22 +1,9 @@
 require 'spec_helper'
 
 describe Lita::Handlers::Enhance::Session do
-  include_context 'redis'
-  include_context 'mocks'
+  include_context 'indexed'
 
   let(:session) { Lita::Handlers::Enhance::Session.new(redis, 'foo', 30) }
-
-  before do
-    enhancers = Lita::Handlers::Enhance::Enhancer.all.map do |klass|
-      klass.new(redis)
-    end
-
-    nodes_and_chef_nodes.each do |node, chef_node|
-      enhancers.each do |enhancer|
-        enhancer.index(chef_node, node)
-      end
-    end
-  end
 
   it 'should return nil for last_level and last_message if no message has been enhanced' do
     expect(session.last_message).to be_nil
