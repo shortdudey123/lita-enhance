@@ -49,16 +49,18 @@ module Lita
             e.enhance!(message, level)
           end
 
+          enhanced_message = message.dup
+
           substitutions.sort! {|a,b| a.range.begin <=> b.range.begin }
 
           current_offset = 0
           substitutions.each do |sub|
-            message[sub.range.begin + current_offset, sub.range.size] = sub.new_text
+            enhanced_message[sub.range.begin + current_offset, sub.range.size] = sub.new_text
 
             current_offset += sub.new_text.length - sub.range.size
           end
 
-          message
+          enhanced_message
         end
 
         private

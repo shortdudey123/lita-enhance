@@ -18,31 +18,31 @@ describe Lita::Handlers::Enhance::Session do
 
   it 'should edit the message to enhance it' do
     message = 'hello world box01'
-    session.enhance!(message, 1)
-    expect(message).to eq('hello world *box01*')
+    enhanced_message = session.enhance!(message, 1)
+    expect(enhanced_message).to eq('hello world *box01*')
   end
 
   it 'should enhance at the supplied level' do
     message = 'hello world box01'
-    session.enhance!(message, 2)
-    expect(message).to eq('hello world *box01 (us-west-2b)*')
+    enhanced_message = session.enhance!(message, 2)
+    expect(enhanced_message).to eq('hello world *box01 (us-west-2b)*')
   end
 
   it 'should should take care to not double enhance text', focus: true do
     message = 'hello world 10.254.74.122'
-    session.enhance!(message, 2)
-    expect(message).to eq('hello world *stg-web01 (us-west-2b)*')
+    enhanced_message = session.enhance!(message, 2)
+    expect(enhanced_message).to eq('hello world *stg-web01 (us-west-2b)*')
   end
 
   it 'should be able to enhance multiple items' do
     message = 'box01 box02'
-    session.enhance!(message, 2)
-    expect(message).to eq('*box01 (us-west-2b)* *box02 (us-west-1c)*')
+    enhanced_message = session.enhance!(message, 2)
+    expect(enhanced_message).to eq('*box01 (us-west-2b)* *box02 (us-west-1c)*')
   end
 
   it 'should be able to correctly apply substitutions that result in shorter text' do
     message = 'before 22:00:0A:FE:4A:79 F2:3C:91:56:A2:00 after'
-    session.enhance!(message, 1)
-    expect(message).to eq('before *box01* *box03* after')
+    enhanced_message = session.enhance!(message, 1)
+    expect(enhanced_message).to eq('before *box01* *box03* after')
   end
 end
