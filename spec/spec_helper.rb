@@ -29,8 +29,9 @@ RSpec.shared_context 'mocks' do
   end
 
   let(:nodes) do
+    chef_indexer = Lita::Handlers::Enhance::ChefIndexer.new(redis, {})
     chef_nodes.map do |chef_node| 
-      node = Lita::Handlers::Enhance::Node.from_chef_node(chef_node)
+      node = chef_indexer.node_from_chef_node(chef_node)
       node.store!(redis)
       node
     end
@@ -56,8 +57,8 @@ RSpec.shared_context 'indexed' do
   let(:chef_indexer) { Lita::Handlers::Enhance::ChefIndexer.new(redis, {}) }
 
   before do
-    nodes_and_chef_nodes.each do |node, chef_node|
-      chef_indexer.index_chef_node(chef_node, node)
+    chef_nodes.each do |chef_node|
+      chef_indexer.index_chef_node(chef_node)
     end
   end
 end
