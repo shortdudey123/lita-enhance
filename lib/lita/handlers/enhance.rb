@@ -65,14 +65,14 @@ module Lita
       end
 
       def refresh(response)
-        response.reply("Will refresh enhance index...")
+        response.reply(t 'refresh.queued')
 
         after(0) do
           begin
             lock_and_refresh_index
-            response.reply("(successful) Refreshed enhance index")
+            response.reply(t 'refresh.success')
           rescue => e
-            response.reply("(failed) Failed to refresh enhance index. Check the logs.")
+            response.reply(t 'refresh.failed')
             log.info { "#{e.message}\n#{e.backtrace.join("\n")}" }
           end
         end
@@ -97,17 +97,17 @@ module Lita
         end
 
         unless blurry_string
-          response.reply("(failed) I need a string to enhance")
+          response.reply(t 'enhance.message_required')
           return
         end
 
         level = session.last_level + 1 unless level
 
         if level > max_level
-          response.reply("Cannot enhance above level #{max_level}")
+          response.reply(t 'enhance.level_too_high', max_level: max_level)
           return
         elsif level < 1
-          response.reply("Level must be between 1 and #{max_level}")
+          response.reply(t 'enhance.level_too_low', max_level: max_level)
           return
         end
 
@@ -120,14 +120,14 @@ module Lita
             response.reply(enhanced_message)
           end
         else
-          response.reply('(nothingtodohere) I could not find anything to enhance')
+          response.reply(t 'enhance.nothing_to_enhance')
         end
       end
 
       def stats(response)
         INDEX_MUTEX.synchronize do
-          response_msg = "Last refreshed: #{@@chef_indexer.last_refreshed || 'never'}"
-          response_msg += ("\nRefreshes every %.2f minutes" % (config.refresh_interval / 60.0))
+          response_msg = t('stats.last_refreshed', last_refreshed: (@@chef_indexer.last_refreshed.to_s || 'never'))
+          response_msg += "\n" + t('stats.refresh_frequency', refresh_mins: ('%.2f' % (config.refresh_interval / 60.0)))
           @@enhancers.each do |e|
             response_msg += "\n#{e}"
           end

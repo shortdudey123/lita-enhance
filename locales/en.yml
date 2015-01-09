@@ -2,3 +2,15 @@ en:
   lita:
     handlers:
       enhance:
+        refresh:
+          queued: "Will refresh enhance index..."
+          success: "(successful) Refreshed enhance index"
+          failed: "(failed) Failed to refresh enhance index. Check the logs."
+        enhance:
+          message_required: "(failed) I need a string to enhance"
+          level_too_high: "(failed) Cannot enhance above level %{max_level}"
+          level_too_low: "(failed) Level must be between 1 and %{max_level}"
+          nothing_to_enhance: "(nothingtodohere) I could not find anything to enhance"
+        stats:
+          last_refreshed: "Last refreshed: %{last_refreshed}"
+          refresh_frequency: "Refreshes every %{refresh_mins} minutes"

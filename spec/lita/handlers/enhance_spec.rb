@@ -55,7 +55,7 @@ describe Lita::Handlers::Enhance, lita_handler: true do
 
   it 'should return an error when the enhancement level is too high' do
     send_command('enhance lvl:9 54.214.188.37')
-    expect(replies).to include('Cannot enhance above level 5')
+    expect(replies).to include('(failed) Cannot enhance above level 5')
   end
 
   it 'should allow implicitly enhancing the last enhanced message at a higher level' do
