@@ -111,12 +111,16 @@ module Lita
           return
         end
 
-        session.enhance!(blurry_string, level)
+        enhanced_message = session.enhance!(blurry_string, level)
 
-        if config.add_quote
-          response.reply('/quote ' + blurry_string)
+        if enhanced_message != blurry_string
+          if config.add_quote
+            response.reply('/quote ' + enhanced_message)
+          else
+            response.reply(enhanced_message)
+          end
         else
-          response.reply(blurry_string)
+          response.reply('(nothingtodohere) I could not find anything to enhance')
         end
       end
 

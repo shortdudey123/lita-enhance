@@ -95,4 +95,9 @@ describe Lita::Handlers::Enhance, lita_handler: true do
     send_command('enhance', as: alice)
     expect(replies).to include('/quote alice *box01 (us-west-2b)*')
   end
+
+  it 'should call out when nothing could be enhanced' do
+    send_command('enhance bubbles')
+    expect(replies).to include('(nothingtodohere) I could not find anything to enhance')
+  end
 end
