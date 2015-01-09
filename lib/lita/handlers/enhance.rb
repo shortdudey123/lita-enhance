@@ -70,9 +70,9 @@ module Lita
         after(0) do
           begin
             lock_and_refresh_index
-            response.reply(t 'refresh.success')
+            response.reply(success(t 'refresh.success'))
           rescue => e
-            response.reply(t 'refresh.failed')
+            response.reply(failed(t 'refresh.failed'))
             log.info { "#{e.message}\n#{e.backtrace.join("\n")}" }
           end
         end
@@ -97,30 +97,26 @@ module Lita
         end
 
         unless blurry_string
-          response.reply(t 'enhance.message_required')
+          response.reply(failed(t 'enhance.message_required'))
           return
         end
 
         level = session.last_level + 1 unless level
 
         if level > max_level
-          response.reply(t 'enhance.level_too_high', max_level: max_level)
+          response.reply(failed(t 'enhance.level_too_high', max_level: max_level))
           return
         elsif level < 1
-          response.reply(t 'enhance.level_too_low', max_level: max_level)
+          response.reply(failed(t 'enhance.level_too_low', max_level: max_level))
           return
         end
 
         enhanced_message = session.enhance!(blurry_string, level)
 
         if enhanced_message != blurry_string
-          if config.add_quote
-            response.reply('/quote ' + enhanced_message)
-          else
-            response.reply(enhanced_message)
-          end
+          response.reply(mono(enhanced_message))
         else
-          response.reply(t 'enhance.nothing_to_enhance')
+          response.reply(no_change(t 'enhance.nothing_to_enhance'))
         end
       end
 
@@ -154,6 +150,56 @@ module Lita
 
         def max_level
           @@enhancers.map {|x| x.max_level }.max
+        end
+
+        def adapter
+          if Lita.respond_to?(:config)
+            Lita.config.robot.adapter
+          elsif robot.respond_to?(:config)
+            robot.config.robot.adapter
+          else
+            :unknown
+          end
+        end
+
+        # Calls out that this message was successful via adapter specific messaging
+        def success(message)
+          case adapter
+          when :hipchat
+            "(successful) #{message}"
+          else
+            message
+          end
+        end
+
+        # Calls out that the action failed via adapter specific messaging
+        def failed(message)
+          case adapter
+          when :hipchat
+            "(failed) #{message}"
+          else
+            message
+          end
+        end
+
+        # Calls out that action resulted in no change via adapter specific messaging
+        def no_change(message)
+          case adapter
+          when :hipchat
+            "(nothingtodohere) #{message}"
+          else
+            message
+          end
+        end
+
+        # Attempts to render the message using a monospaced font via adapter specific messaging
+        def mono(message)
+          case adapter
+          when :hipchat
+            "/quote #{message}"
+          else
+            message
+          end
         end
     end
 
