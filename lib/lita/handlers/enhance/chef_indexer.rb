@@ -33,11 +33,28 @@ module Lita
           nil
         end
 
-        def index_chef_node(chef_node, node)
+        def index_chef_node(chef_node)
+          node = node_from_chef_node(chef_node)
+          node.store!(redis)
+
           index_hostname(chef_node, node)
           index_instanceid(chef_node, node)
           index_ip(chef_node, node)
           index_mac_address(chef_node, node)
+        end
+
+        def node_from_chef_node(chef_node)
+          Node.new.tap do |n|
+            n.name = chef_node.name
+            n.dc = if chef_node['ec2']
+                     chef_node['ec2']['placement_availability_zone']
+                   elsif chef_node['cloud']
+                     chef_node['cloud']['provider']
+                   end
+            n.environment = chef_node.environment
+            n.fqdn = chef_node['fqdn']
+            n.last_seen_at = Time.now
+          end
         end
 
         private
@@ -49,10 +66,7 @@ module Lita
           query = Chef::Search::Query.new
 
           query.search("node", "*:*") do |chef_node|
-            node = Node.from_chef_node(chef_node)
-            node.store!(redis)
-
-            index_chef_node(chef_node, node)
+            index_chef_node(chef_node)
           end
         end
 

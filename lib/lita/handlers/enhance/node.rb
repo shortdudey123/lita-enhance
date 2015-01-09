@@ -4,20 +4,6 @@ module Lita
       class Node
         attr_accessor :name, :dc, :environment, :fqdn, :last_seen_at
 
-        def self.from_chef_node(node)
-          new.tap do |n|
-            n.name = node.name
-            n.dc = if node['ec2']
-                     node['ec2']['placement_availability_zone']
-                   elsif node['cloud']
-                     node['cloud']['provider']
-                   end
-            n.environment = node.environment
-            n.fqdn = node['fqdn']
-            n.last_seen_at = Time.now
-          end
-        end
-
         # Creates a new Node instance and loads its data from Redis
         def self.load(redis, name)
           node = nil
