@@ -1,11 +1,11 @@
 Gem::Specification.new do |spec|
   spec.name          = "lita-enhance"
-  spec.version       = "0.0.1"
+  spec.version       = "0.9.0"
   spec.authors       = ["Doug Barth"]
   spec.email         = ["doug@pagerduty.com"]
   spec.description   = %q{A Lita handler that enhances text by replacing opaque identifiers with Chef node names}
   spec.summary       = %q{A Lita handler that enhances text by replacing opaque identifiers with Chef node names}
-  spec.homepage      = "TODO: Add a homepage"
+  spec.homepage      = "https://github.com/PagerDuty/lita-enhance"
   spec.license       = "MIT"
   spec.metadata      = { "lita_plugin_type" => "handler" }
 
