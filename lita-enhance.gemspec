@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name          = "lita-enhance"
-  spec.version       = "0.9.0"
+  spec.version       = "0.9.1"
   spec.authors       = ["Doug Barth"]
   spec.email         = ["doug@pagerduty.com"]
   spec.description   = %q{A Lita handler that enhances text by replacing opaque machine identifiers with that machine's hostname}
