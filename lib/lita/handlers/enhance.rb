@@ -114,7 +114,7 @@ module Lita
         enhanced_message = session.enhance!(blurry_string, level)
 
         if enhanced_message != blurry_string
-          response.reply(mono(enhanced_message))
+          response.reply(render_template('enhance', message: enhanced_message))
         else
           response.reply(no_change(t 'enhance.nothing_to_enhance'))
         end
@@ -187,16 +187,6 @@ module Lita
           case adapter
           when :hipchat
             "(nothingtodohere) #{message}"
-          else
-            message
-          end
-        end
-
-        # Attempts to render the message using a monospaced font via adapter specific messaging
-        def mono(message)
-          case adapter
-          when :hipchat
-            "/quote #{message}"
           else
             message
           end
