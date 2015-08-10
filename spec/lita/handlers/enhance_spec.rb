@@ -101,6 +101,17 @@ describe Lita::Handlers::Enhance, lita_handler: true do
     expect(replies).to include('I could not find anything to enhance')
   end
 
+  describe 'under Slack' do
+    before do
+      robot.config.robot.adapter = :slack
+    end
+
+    it 'should format the response with a code block' do
+      send_command('enhance 54.214.188.37')
+      expect(replies).to include('```*box01*```')
+    end
+  end
+
   describe 'under HipChat' do
     before do
       robot.config.robot.adapter = :hipchat
