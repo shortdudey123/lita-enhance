@@ -31,7 +31,7 @@ Machine details are obtained by indexing database of machine assets. Right now o
 
 ```
 you> enhance lvl:2 old-box01
-lita> ¿old-box01 (us-east-1)?
+lita> ?old-box01 (us-east-1)?
 ```
 
 [And for fun](https://www.youtube.com/watch?v=Vxq9yj2pVWk), you can implicitly enhance previously enhanced text by just sending ```enhance```. The string to enhance is retained separately in each room that the enhance string was sent.
