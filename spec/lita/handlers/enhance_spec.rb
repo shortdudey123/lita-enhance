@@ -6,15 +6,15 @@ describe Lita::Handlers::Enhance, lita_handler: true do
   # Make sure that we are indexing into the same Redis namespace that the handler uses.
   let(:redis) { subject.redis }
 
-  let(:alice) { Lita::User.create("2", name: "Alice") }
+  let(:alice) { Lita::User.create('2', name: 'Alice') }
 
-  it { routes_command('refresh enhance').to(:refresh) }
-  it { routes_command('enhance stats').to(:stats) }
+  it { is_expected.to route_command('refresh enhance').to(:refresh) }
+  it { is_expected.to route_command('enhance stats').to(:stats) }
 
-  it { routes_command('enhance 127.0.0.1').to(:enhance) }
-  it { routes_command("enhance lvl:1 blah\nblah").to(:enhance) }
-  it { routes_command("enhance").to(:enhance) }
-  it { routes_command("enhance lvl:2").to(:enhance) }
+  it { is_expected.to route_command('enhance 127.0.0.1').to(:enhance) }
+  it { is_expected.to route_command("enhance lvl:1 blah\nblah").to(:enhance) }
+  it { is_expected.to route_command('enhance').to(:enhance) }
+  it { is_expected.to route_command('enhance lvl:2').to(:enhance) }
 
   it 'should show stats about itself' do
     send_command('enhance stats')
