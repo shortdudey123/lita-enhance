@@ -134,10 +134,10 @@ module Lita
       private
 
       # This mutex must be obtained to refresh the index
-      REFRESH_MUTEX = Mutex.new unless defined?(REFRESH_MUTEX)
+      REFRESH_MUTEX ||= Mutex.new
 
       # This mutex must be obtains to update the index with new data, or to use the index to enhance some text
-      INDEX_MUTEX   = Mutex.new unless defined?(INDEX_MUTEX)
+      INDEX_MUTEX ||= Mutex.new
 
       def lock_and_refresh_index
         REFRESH_MUTEX.synchronize do
