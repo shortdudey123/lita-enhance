@@ -62,3 +62,5 @@ RSpec.shared_context 'indexed' do
     end
   end
 end
+
+Lita.version_3_compatibility_mode = false
