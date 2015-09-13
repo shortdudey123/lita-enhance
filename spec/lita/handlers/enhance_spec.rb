@@ -3,6 +3,8 @@ require "spec_helper"
 describe Lita::Handlers::Enhance, lita_handler: true do
   include_context 'indexed'
 
+  before { allow(described_class).to receive(:new).and_return(subject) }
+
   # Make sure that we are indexing into the same Redis namespace that the handler uses.
   let(:redis) { subject.redis }
 
