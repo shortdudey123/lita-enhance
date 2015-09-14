@@ -117,12 +117,12 @@ describe Lita::Handlers::Enhance, lita_handler: true do
       sleep(0.5)
 
       expect(replies).to include('Will refresh enhance index...')
-      expect(replies).to include(':successful: Refreshed enhance index')
+      expect(replies).to include(':heavy_check_mark: Refreshed enhance index')
     end
 
     it 'mark failure using an emoji' do
       send_command('enhance')
-      expect(replies).to include(':failed: I need a string to enhance')
+      expect(replies).to include(':heavy_multiplication_x: I need a string to enhance')
     end
 
     it 'should use backticks to render mono text' do
@@ -132,7 +132,7 @@ describe Lita::Handlers::Enhance, lita_handler: true do
 
     it 'should use emoji to call out when nothing was found to enhance' do
       send_command('enhance bubbles')
-      expect(replies).to include(':nothingtodohere: I could not find anything to enhance')
+      expect(replies).to include(':heavy_minus_sign: I could not find anything to enhance')
     end
   end
 
