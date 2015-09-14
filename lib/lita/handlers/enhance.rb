@@ -70,9 +70,9 @@ module Lita
         after(0) do
           begin
             lock_and_refresh_index
-            response.reply(success(t 'refresh.success'))
+            response.reply(render_template('success', message: (t 'refresh.success')))
           rescue => e
-            response.reply(failed(t 'refresh.failed'))
+            response.reply(render_template('failed', message: (t 'refresh.failed')))
             log.info { "#{e.message}\n#{e.backtrace.join("\n")}" }
           end
         end
@@ -97,26 +97,26 @@ module Lita
         end
 
         unless blurry_string
-          response.reply(failed(t 'enhance.message_required'))
+          response.reply(render_template('failed', message: (t 'enhance.message_required')))
           return
         end
 
         level = session.last_level + 1 unless level
 
         if level > max_level
-          response.reply(failed(t 'enhance.level_too_high', max_level: max_level))
+          response.reply(render_template('failed', message: (t 'enhance.level_too_high', max_level: max_level)))
           return
         elsif level < 1
-          response.reply(failed(t 'enhance.level_too_low', max_level: max_level))
+          response.reply(render_template('failed', message: (t 'enhance.level_too_low', max_level: max_level)))
           return
         end
 
         enhanced_message = session.enhance!(blurry_string, level)
 
         if enhanced_message != blurry_string
-          response.reply(render_template('enhance', message: enhanced_message))
+          response.reply(render_template('mono', message: enhanced_message))
         else
-          response.reply(no_change(t 'enhance.nothing_to_enhance'))
+          response.reply(render_template('no_change', message: (t 'enhance.nothing_to_enhance')))
         end
       end
 
@@ -132,67 +132,27 @@ module Lita
       end
 
       private
-        # This mutex must be obtained to refresh the index
-        REFRESH_MUTEX = Mutex.new unless defined?(REFRESH_MUTEX)
 
-        # This mutex must be obtains to update the index with new data, or to use the index to enhance some text
-        INDEX_MUTEX   = Mutex.new unless defined?(INDEX_MUTEX)
+      # This mutex must be obtained to refresh the index
+      REFRESH_MUTEX ||= Mutex.new
 
-        def lock_and_refresh_index
-          REFRESH_MUTEX.synchronize do
-            @@chef_indexer.refresh
-          end
+      # This mutex must be obtains to update the index with new data, or to use the index to enhance some text
+      INDEX_MUTEX ||= Mutex.new
+
+      def lock_and_refresh_index
+        REFRESH_MUTEX.synchronize do
+          @@chef_indexer.refresh
         end
+      end
 
-        def last_message_key(response)
-          response.message.source.room || response.message.source.user.id
-        end
+      def last_message_key(response)
+        response.message.source.room || response.message.source.user.id
+      end
 
-        def max_level
-          @@enhancers.map {|x| x.max_level }.max
-        end
-
-        def adapter
-          if Lita.respond_to?(:config)
-            Lita.config.robot.adapter
-          elsif robot.respond_to?(:config)
-            robot.config.robot.adapter
-          else
-            :unknown
-          end
-        end
-
-        # Calls out that this message was successful via adapter specific messaging
-        def success(message)
-          case adapter
-          when :hipchat
-            "(successful) #{message}"
-          else
-            message
-          end
-        end
-
-        # Calls out that the action failed via adapter specific messaging
-        def failed(message)
-          case adapter
-          when :hipchat
-            "(failed) #{message}"
-          else
-            message
-          end
-        end
-
-        # Calls out that action resulted in no change via adapter specific messaging
-        def no_change(message)
-          case adapter
-          when :hipchat
-            "(nothingtodohere) #{message}"
-          else
-            message
-          end
-        end
+      def max_level
+        @@enhancers.map {|x| x.max_level }.max
+      end
     end
-
 
     Lita.register_handler(Enhance)
   end

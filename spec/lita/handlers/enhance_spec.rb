@@ -3,18 +3,20 @@ require "spec_helper"
 describe Lita::Handlers::Enhance, lita_handler: true do
   include_context 'indexed'
 
+  before { allow(described_class).to receive(:new).and_return(subject) }
+
   # Make sure that we are indexing into the same Redis namespace that the handler uses.
   let(:redis) { subject.redis }
 
-  let(:alice) { Lita::User.create("2", name: "Alice") }
+  let(:alice) { Lita::User.create('2', name: 'Alice') }
 
-  it { routes_command('refresh enhance').to(:refresh) }
-  it { routes_command('enhance stats').to(:stats) }
+  it { is_expected.to route_command('refresh enhance').to(:refresh) }
+  it { is_expected.to route_command('enhance stats').to(:stats) }
 
-  it { routes_command('enhance 127.0.0.1').to(:enhance) }
-  it { routes_command("enhance lvl:1 blah\nblah").to(:enhance) }
-  it { routes_command("enhance").to(:enhance) }
-  it { routes_command("enhance lvl:2").to(:enhance) }
+  it { is_expected.to route_command('enhance 127.0.0.1').to(:enhance) }
+  it { is_expected.to route_command("enhance lvl:1 blah\nblah").to(:enhance) }
+  it { is_expected.to route_command('enhance').to(:enhance) }
+  it { is_expected.to route_command('enhance lvl:2').to(:enhance) }
 
   it 'should show stats about itself' do
     send_command('enhance stats')
@@ -103,18 +105,40 @@ describe Lita::Handlers::Enhance, lita_handler: true do
 
   describe 'under Slack' do
     before do
-      robot.config.robot.adapter = :slack
+      allow_any_instance_of(Lita::TemplateResolver).to receive(:adapter_name).and_return(:slack)
     end
 
-    it 'should format the response with a code block' do
+    it 'should mark success using an emoji' do
+      expect(subject).to receive(:lock_and_refresh_index)
+
+      send_command('refresh enhance')
+
+      # Give the timer a chance to run
+      sleep(0.5)
+
+      expect(replies).to include('Will refresh enhance index...')
+      expect(replies).to include(':heavy_check_mark: Refreshed enhance index')
+    end
+
+    it 'mark failure using an emoji' do
+      send_command('enhance')
+      expect(replies).to include(':heavy_multiplication_x: I need a string to enhance')
+    end
+
+    it 'should use backticks to render mono text' do
       send_command('enhance 54.214.188.37')
       expect(replies).to include('```*box01*```')
+    end
+
+    it 'should use emoji to call out when nothing was found to enhance' do
+      send_command('enhance bubbles')
+      expect(replies).to include(':heavy_minus_sign: I could not find anything to enhance')
     end
   end
 
   describe 'under HipChat' do
     before do
-      robot.config.robot.adapter = :hipchat
+      allow_any_instance_of(Lita::TemplateResolver).to receive(:adapter_name).and_return(:hipchat)
     end
 
     it 'should mark success using an emoji' do

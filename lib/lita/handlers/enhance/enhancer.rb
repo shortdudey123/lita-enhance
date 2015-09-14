@@ -7,7 +7,7 @@ module Lita
         @@subclasses = []
 
         @@current = %w(* *)
-        @@old = %w(¿ ?)
+        @@old = %w(? ?)
 
         def self.all
           @@subclasses.select! {|x| x.weakref_alive? }
