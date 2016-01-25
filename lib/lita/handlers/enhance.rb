@@ -31,18 +31,13 @@ module Lita
         }
       )
 
-      def self.default_config(config)
-        config.knife_configs = {}
-        if File.exist?('~/.chef/knife.rb')
-          config.knife_configs['default'] = '~/.chef/knife.rb'
-        end
+      kcfg = File.exist?('~/.chef/knife.rb') ? {'default' => '~/.chef/knife.rb'} : {}
 
-        config.refresh_interval = 15 * 60
-        config.add_quote = true
-
-        # How long to remember the previously enhanced message for.
-        config.blurry_message_ttl = 7 * 24 * 60 * 60 # seconds
-      end
+      config :knife_configs, default: kcfg
+      config :refresh_interval, default: 15 * 60
+      config :add_quote, default: true
+      # How long to remember the previously enhanced message for.
+      config :blurry_message_ttl, default: 7 * 24 * 60 * 60 # seconds
 
       def setup_background_refresh(payload)
         @@chef_indexer = ChefIndexer.new(redis, config.knife_configs)
