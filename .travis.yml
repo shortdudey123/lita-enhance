@@ -1,4 +1,3 @@
-cache: bundler
 language: ruby
 rvm:
 - 2.1
@@ -6,3 +5,5 @@ rvm:
 services:
   - redis-server
 sudo: false
+before_install:
+  - gem update bundler
