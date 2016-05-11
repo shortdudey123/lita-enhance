@@ -38,6 +38,9 @@ module Lita
       config :add_quote, default: true
       # How long to remember the previously enhanced message for.
       config :blurry_message_ttl, default: 7 * 24 * 60 * 60 # seconds
+      # Location of size attribute in chef.
+      config :size_attribute, default: 'size'
+
 
       def setup_background_refresh(payload)
         @@chef_indexer = ChefIndexer.new(redis, config.knife_configs)

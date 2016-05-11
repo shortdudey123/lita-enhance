@@ -8,6 +8,7 @@ describe Lita::Handlers::Enhance::Node do
     described_class.new.tap do |n|
       n.name = 'box01'
       n.dc = 'us-west-2b'
+      n.size = 'xlarge'
       n.environment = '_default'
       n.fqdn = 'box01.example.com'
       n.last_seen_at = Time.now
@@ -18,6 +19,7 @@ describe Lita::Handlers::Enhance::Node do
     node_json = node.as_json
     expect(node_json).to include(
       name: 'box01',
+      size: 'xlarge',
       dc: 'us-west-2b',
       environment: '_default',
       fqdn: 'box01.example.com'
@@ -36,10 +38,10 @@ describe Lita::Handlers::Enhance::Node do
 
   it 'should be able to render itself at differing levels of detail' do
     expect(node.render(1)).to eq('box01')
-    expect(node.render(2)).to eq('box01 (us-west-2b)')
-    expect(node.render(3)).to eq('box01 (us-west-2b, _default)')
-    expect(node.render(4)).to match /box01 \(us-west-2b, _default, last seen .*\)/
-    expect(node.render(5)).to match /box01\.example\.com \(us-west-2b, _default, last seen .*\)/
+    expect(node.render(2)).to eq('box01 (us-west-2b, xlarge)')
+    expect(node.render(3)).to eq('box01 (us-west-2b, xlarge, _default)')
+    expect(node.render(4)).to match /box01 \(us-west-2b, xlarge, _default, last seen .*\)/
+    expect(node.render(5)).to match /box01\.example\.com \(us-west-2b, xlarge, _default, last seen .*\)/
   end
 
   it 'should know if it is old' do

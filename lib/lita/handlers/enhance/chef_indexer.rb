@@ -1,4 +1,5 @@
 require 'chef'
+require 'chef/knife/core/generic_presenter'
 
 module Lita
   module Handlers
@@ -46,6 +47,7 @@ module Lita
         def node_from_chef_node(chef_node)
           Node.new.tap do |n|
             n.name = chef_node.name
+            n.size = chef_fetch_attribute(chef_node, Lita.config.handlers.enhance.size_attribute)
             n.dc = if chef_node['ec2']
                      chef_node['ec2']['placement_availability_zone']
                    elsif chef_node['cloud']
@@ -126,6 +128,14 @@ module Lita
 
         def log
           Lita.logger
+        end
+
+        def chef_presenter
+          @generic_presenter ||= Chef::Knife::Core::GenericPresenter.new(Chef::Log, Chef::Config)
+        end
+
+        def chef_fetch_attribute(chef_node, attr)
+          chef_presenter.extract_nested_value(chef_node, attr)
         end
       end
     end

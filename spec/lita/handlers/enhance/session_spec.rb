@@ -25,19 +25,19 @@ describe Lita::Handlers::Enhance::Session do
   it 'should enhance at the supplied level' do
     message = 'hello world box01'
     enhanced_message = session.enhance!(message, 2)
-    expect(enhanced_message).to eq('hello world *box01 (us-west-2b)*')
+    expect(enhanced_message).to eq('hello world *box01 (us-west-2b, xlarge)*')
   end
 
   it 'should should take care to not double enhance text', focus: true do
     message = 'hello world 10.254.74.122'
     enhanced_message = session.enhance!(message, 2)
-    expect(enhanced_message).to eq('hello world *stg-web01 (us-west-2b)*')
+    expect(enhanced_message).to eq('hello world *stg-web01 (us-west-2b, small)*')
   end
 
   it 'should be able to enhance multiple items' do
     message = 'box01 box02'
     enhanced_message = session.enhance!(message, 2)
-    expect(enhanced_message).to eq('*box01 (us-west-2b)* *box02 (us-west-1c)*')
+    expect(enhanced_message).to eq('*box01 (us-west-2b, xlarge)* *box02 (us-west-1c, large)*')
   end
 
   it 'should be able to correctly apply substitutions that result in shorter text' do

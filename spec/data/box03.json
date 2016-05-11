@@ -26,6 +26,7 @@
     "machinename": "box03",
     "fqdn": "box03.example.com",
     "domain": "example.com",
+    "size": "medium",
     "network": {
       "interfaces": {
         "lo": {
