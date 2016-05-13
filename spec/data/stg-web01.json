@@ -83,7 +83,7 @@
     "hostname": "stg-web01",
     "machinename": "stg-web01",
     "fqdn": "stg-web01.example.com",
-    "domain": "example.com"
+    "domain": "example.com",
+    "size": "small"
   }
 }
-

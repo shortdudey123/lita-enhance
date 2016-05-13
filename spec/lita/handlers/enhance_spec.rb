@@ -52,7 +52,7 @@ describe Lita::Handlers::Enhance, lita_handler: true do
 
   it 'should allow increasing the level of enhancement' do
     send_command('enhance lvl:2 54.214.188.37')
-    expect(replies).to include('*box01 (us-west-2b)*')
+    expect(replies).to include('*box01 (us-west-2b, xlarge)*')
   end
 
   it 'should return an error when the enhancement level is too high' do
@@ -67,13 +67,13 @@ describe Lita::Handlers::Enhance, lita_handler: true do
 
     # Now we're re-enhancing at level 2
     send_command('enhance')
-    expect(replies).to include('*box01 (us-west-2b)*')
+    expect(replies).to include('*box01 (us-west-2b, xlarge)*')
   end
 
   it 'should allow implicitly enhancing the last message at an explicit level' do
     # If we explicitly enhance at level 3, the next level would be 4
     send_command('enhance lvl:3 54.214.188.37')
-    expect(replies).to include('*box01 (us-west-2b, _default)*')
+    expect(replies).to include('*box01 (us-west-2b, xlarge, _default)*')
 
     # A user can choose an explicit level....
     send_command('enhance lvl:1')
@@ -81,7 +81,7 @@ describe Lita::Handlers::Enhance, lita_handler: true do
 
     # ... which then is retained for the next implicit enhancement
     send_command('enhance')
-    expect(replies).to include('*box01 (us-west-2b)*')
+    expect(replies).to include('*box01 (us-west-2b, xlarge)*')
   end
 
   it 'implicit messages are remembered per-source' do
@@ -92,10 +92,10 @@ describe Lita::Handlers::Enhance, lita_handler: true do
     expect(replies).to include('alice *box01*')
 
     send_command('enhance lvl:3')
-    expect(replies).to include('test user *box01 (us-west-2b, _default)*')
+    expect(replies).to include('test user *box01 (us-west-2b, xlarge, _default)*')
 
     send_command('enhance', as: alice)
-    expect(replies).to include('alice *box01 (us-west-2b)*')
+    expect(replies).to include('alice *box01 (us-west-2b, xlarge)*')
   end
 
   it 'should call out when nothing could be enhanced' do

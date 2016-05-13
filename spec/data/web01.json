@@ -80,10 +80,12 @@
       "public_ipv4": "54.214.188.39",
       "local_ipv4": "10.254.74.123"
     },
+    "base": {
+      "size": "medium.memory"
+    },
     "hostname": "web01",
     "machinename": "web01",
     "fqdn": "web01.example.com",
     "domain": "example.com"
   }
 }
-

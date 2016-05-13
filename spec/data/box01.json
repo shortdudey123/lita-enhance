@@ -209,6 +209,7 @@
     "hostname": "box01",
     "machinename": "box01",
     "fqdn": "box01.example.com",
-    "domain": "example.com"
+    "domain": "example.com",
+    "size": "xlarge"
   }
 }

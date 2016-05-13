@@ -22,6 +22,10 @@ RSpec.shared_context 'mocks' do
     chef_nodes.detect {|n| n.name == 'box03' }
   end
 
+  let(:stg_web01) do
+    chef_nodes.detect {|n| n.name == 'web01' }
+  end
+
   let(:chef_nodes) do
     Dir['spec/data/*.json'].map do |node_json|
       Chef::Node.json_create(JSON.parse(IO.read(node_json)))
@@ -30,7 +34,7 @@ RSpec.shared_context 'mocks' do
 
   let(:nodes) do
     chef_indexer = Lita::Handlers::Enhance::ChefIndexer.new(redis, {})
-    chef_nodes.map do |chef_node| 
+    chef_nodes.map do |chef_node|
       node = chef_indexer.node_from_chef_node(chef_node)
       node.store!(redis)
       node

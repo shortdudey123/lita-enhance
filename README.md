@@ -24,14 +24,14 @@ you> enhance 10.214.0.1
 lita> *box01*
 
 you> enhance lvl:2 10.214.0.1
-lita> *box01 (us-west-2)*
+lita> *box01 (us-west-2, xlarge)*
 ```
 
 Machine details are obtained by indexing database of machine assets. Right now only Chef servers are indexed. Results are indexed every 15 minutes by default. Old machines are left in the index so you can identify them even after they have been torn down.
 
 ```
 you> enhance lvl:2 old-box01
-lita> ?old-box01 (us-east-1)?
+lita> ?old-box01 (us-east-1, large)?
 ```
 
 [And for fun](https://www.youtube.com/watch?v=Vxq9yj2pVWk), you can implicitly enhance previously enhanced text by just sending ```enhance```. The string to enhance is retained separately in each room that the enhance string was sent.
@@ -41,7 +41,7 @@ you> enhance 10.214.0.1
 lita> *box01*
 
 you> enhance
-lita> *box01 (us-west-2)*
+lita> *box01 (us-west-2, xlarge)*
 ```
 
 ## Installation
@@ -66,6 +66,9 @@ config.handlers.enhance.refresh_interval = 15 * 60
 
 # How long in seconds to remember messages to implicitly enhance. Default is 1 week.
 config.handlers.enhance.blurry_message_ttl = 7 * 24 * 60 * 60
+
+# Location of size attribute in chef, separated by '.'.  Default is size
+config.handlers.enhance.size_attribute = 'base.size'
 ```
 
 ## Usage

@@ -87,6 +87,7 @@
     "machinename": "box02",
     "fqdn": "box02.example.com",
     "domain": "example.com",
+    "size": "large",
     "ec2": {
       "ami_id": "ami-6d6b6028",
       "ami_launch_index": "0",
