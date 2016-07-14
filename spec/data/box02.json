@@ -152,6 +152,10 @@
       "public_ipv4": "184.169.229.1",
       "local_ipv4": "10.196.75.1"
     },
+    "roles": [
+      "webapp",
+      "base"
+    ],
     "keys": {
       "ssh": {
         "host_rsa_public": "AAAAB3NzaC1yc2EAAAABIwAAAQEA5bys9CU7N5MM1F/MhDo5WE8zerQ+We4SO97nAjlPpCquaecmDR6QqgsV2JQNHKRyaElxarfDHbPByE25xBINZJg3cQlcJjEhCqX4M7urKdLzU/rrHfOOtZ4OfTzSPH2L132fnfXzkwjvEJEjNhAzD1Vbc8eU4Kzw7r4jWBf8pAedppWltJ0bemhLmJo4vMdrW4W2ApKynNFc805TSYN91zjoK5b67/9LHYUR9DJVo1QeAgbYdD4dTv1VInEGS5x3XeFIiptLvqQxokq38uxZ+vzwDxBnFUcZ6XAEZO2QxFFUA0sSHY4mn/G/a82U5K/icMW5qtoAAofad9/ER5vR8w==",

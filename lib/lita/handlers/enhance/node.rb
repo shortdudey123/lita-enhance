@@ -2,7 +2,7 @@ module Lita
   module Handlers
     class Enhance < Handler
       class Node
-        attr_accessor :name, :size, :dc, :environment, :fqdn, :last_seen_at
+        attr_accessor :name, :size, :dc, :environment, :roles, :fqdn, :last_seen_at
 
         # Creates a new Node instance and loads its data from Redis
         def self.load(redis, name)
@@ -25,7 +25,7 @@ module Lita
 
         def self.from_json(json)
           self.new.tap do |node|
-            %w(name size dc environment fqdn).each do |field|
+            %w(name size dc environment roles fqdn).each do |field|
               node.send("#{field}=", json[field])
             end
             node.last_seen_at = Time.parse(json['last_seen_at']) if json['last_seen_at']
@@ -33,16 +33,16 @@ module Lita
         end
 
         def as_json
-          {name: name, dc: dc, size: size, environment: environment, fqdn: fqdn, last_seen_at: last_seen_at}
+          {name: name, dc: dc, size: size, environment: environment, roles: roles, fqdn: fqdn, last_seen_at: last_seen_at}
         end
 
         def render(level)
           case level
           when 1 then name
           when 2 then "#{name} (#{dc}, #{size})"
-          when 3 then "#{name} (#{dc}, #{size}, #{environment})"
-          when 4 then "#{name} (#{dc}, #{size}, #{environment}, last seen #{last_seen_at})"
-          when 5 then "#{fqdn} (#{dc}, #{size}, #{environment}, last seen #{last_seen_at})"
+          when 3 then "#{name} (#{dc}, size:#{size}, env:#{environment}, roles:#{roles.join('|')})"
+          when 4 then "#{name} (#{dc}, size:#{size}, env:#{environment}, roles:#{roles.join('|')}, last seen: #{last_seen_at})"
+          when 5 then "#{fqdn} (#{dc}, size:#{size}, env:#{environment}, roles:#{roles.join('|')}, last seen: #{last_seen_at})"
           end
         end
 

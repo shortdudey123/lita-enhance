@@ -80,6 +80,10 @@
       "public_ipv4": "54.214.188.38",
       "local_ipv4": "10.254.74.122"
     },
+    "roles": [
+      "db",
+      "base"
+    ],
     "hostname": "stg-web01",
     "machinename": "stg-web01",
     "fqdn": "stg-web01.example.com",

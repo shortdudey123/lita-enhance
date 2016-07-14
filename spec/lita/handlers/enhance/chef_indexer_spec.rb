@@ -14,6 +14,7 @@ describe Lita::Handlers::Enhance::ChefIndexer do
     expect(node.name).to eq('box01')
     expect(node.dc).to eq('us-west-2b')
     expect(node.environment).to eq('_default')
+    expect(node.roles).to eq(["webapp", "base"])
     expect(node.fqdn).to eq('box01.example.com')
     expect(node.last_seen_at.to_f).to be_within(5).of(Time.now.to_f)
   end
@@ -26,6 +27,7 @@ describe Lita::Handlers::Enhance::ChefIndexer do
     expect(node.dc).to eq('us-west-2b')
     expect(node.size).to eq('medium.memory')
     expect(node.environment).to eq('_default')
+    expect(node.roles).to eq(["webapp", "base"])
     expect(node.fqdn).to eq('web01.example.com')
     expect(node.last_seen_at.to_f).to be_within(5).of(Time.now.to_f)
   end
