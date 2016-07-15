@@ -40,9 +40,9 @@ module Lita
           case level
           when 1 then name
           when 2 then "#{name} (#{dc}, #{size})"
-          when 3 then "#{name} (#{dc}, size:#{size}, env:#{environment}, roles:#{roles.join('|')})"
-          when 4 then "#{name} (#{dc}, size:#{size}, env:#{environment}, roles:#{roles.join('|')}, last seen: #{last_seen_at})"
-          when 5 then "#{fqdn} (#{dc}, size:#{size}, env:#{environment}, roles:#{roles.join('|')}, last seen: #{last_seen_at})"
+          when 3 then "#{name} (#{dc}, size:#{size}, env:#{environment}, roles:[#{roles.join(', ')}])"
+          when 4 then "#{name} (#{dc}, size:#{size}, env:#{environment}, roles:[#{roles.join(', ')}], last seen: #{last_seen_at})"
+          when 5 then "#{fqdn} (#{dc}, size:#{size}, env:#{environment}, roles:[#{roles.join(', ')}], last seen: #{last_seen_at})"
           end
         end
 

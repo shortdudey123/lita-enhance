@@ -41,9 +41,9 @@ describe Lita::Handlers::Enhance::Node do
   it 'should be able to render itself at differing levels of detail' do
     expect(node.render(1)).to eq('box01')
     expect(node.render(2)).to eq('box01 (us-west-2b, xlarge)')
-    expect(node.render(3)).to eq('box01 (us-west-2b, size:xlarge, env:_default, roles:webapp|base)')
-    expect(node.render(4)).to match /box01 \(us-west-2b, size:xlarge, env:_default, roles:webapp\|base, last seen: .*\)/
-    expect(node.render(5)).to match /box01\.example\.com \(us-west-2b, size:xlarge, env:_default, roles:webapp\|base, last seen: .*\)/
+    expect(node.render(3)).to eq('box01 (us-west-2b, size:xlarge, env:_default, roles:[webapp, base])')
+    expect(node.render(4)).to match /box01 \(us-west-2b, size:xlarge, env:_default, roles:\[webapp, base\], last seen: .*\)/
+    expect(node.render(5)).to match /box01\.example\.com \(us-west-2b, size:xlarge, env:_default, roles:\[webapp, base\], last seen: .*\)/
   end
 
   it 'should know if it is old' do
