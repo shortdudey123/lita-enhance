@@ -119,6 +119,10 @@
       "local_ipv4": null,
       "local_hostname": null,
       "provider": "linode"
-    }
+    },
+    "roles": [
+      "webapp",
+      "base"
+    ]
   }
 }

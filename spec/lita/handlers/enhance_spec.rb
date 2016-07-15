@@ -73,7 +73,7 @@ describe Lita::Handlers::Enhance, lita_handler: true do
   it 'should allow implicitly enhancing the last message at an explicit level' do
     # If we explicitly enhance at level 3, the next level would be 4
     send_command('enhance lvl:3 54.214.188.37')
-    expect(replies).to include('*box01 (us-west-2b, xlarge, _default)*')
+    expect(replies).to include('*box01 (us-west-2b, size:xlarge, env:_default, roles:[webapp, base])*')
 
     # A user can choose an explicit level....
     send_command('enhance lvl:1')
@@ -92,7 +92,7 @@ describe Lita::Handlers::Enhance, lita_handler: true do
     expect(replies).to include('alice *box01*')
 
     send_command('enhance lvl:3')
-    expect(replies).to include('test user *box01 (us-west-2b, xlarge, _default)*')
+    expect(replies).to include('test user *box01 (us-west-2b, size:xlarge, env:_default, roles:[webapp, base])*')
 
     send_command('enhance', as: alice)
     expect(replies).to include('alice *box01 (us-west-2b, xlarge)*')

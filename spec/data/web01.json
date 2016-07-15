@@ -83,6 +83,10 @@
     "base": {
       "size": "medium.memory"
     },
+    "roles": [
+      "webapp",
+      "base"
+    ],
     "hostname": "web01",
     "machinename": "web01",
     "fqdn": "web01.example.com",

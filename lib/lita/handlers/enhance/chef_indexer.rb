@@ -54,6 +54,7 @@ module Lita
                      chef_node['cloud']['provider']
                    end
             n.environment = chef_node.environment
+            n.roles = chef_node['roles']
             n.fqdn = chef_node['fqdn']
             n.last_seen_at = Time.now
           end

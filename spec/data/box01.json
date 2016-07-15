@@ -206,6 +206,10 @@
       "public_ipv4": "54.214.188.37",
       "local_ipv4": "10.254.74.121"
     },
+    "roles": [
+      "webapp",
+      "base"
+    ],
     "hostname": "box01",
     "machinename": "box01",
     "fqdn": "box01.example.com",
