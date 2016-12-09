@@ -59,7 +59,7 @@ module Lita
         private
 
         def map_hostname_to_node(hostname, node)
-          return if hostname.nil?
+          return if hostname.nil? || hostname.empty?
 
           short_hostname = hostname.split('.')[0]
 

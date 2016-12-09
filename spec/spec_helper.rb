@@ -28,7 +28,7 @@ RSpec.shared_context 'mocks' do
 
   let(:chef_nodes) do
     Dir['spec/data/*.json'].map do |node_json|
-      Chef::Node.json_create(JSON.parse(IO.read(node_json)))
+      Chef::Node.from_hash(JSON.parse(IO.read(node_json)))
     end
   end
 
