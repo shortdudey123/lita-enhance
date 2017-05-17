@@ -19,6 +19,15 @@ describe Lita::Handlers::Enhance::InstanceIdEnhancer do
     )
   end
 
+  it 'should enhance a short and long EC2 instance ID that overlap' do
+    message = 'i-f4ff6aff i-f4ff6afff4ff6afff'
+    substitutions = enhancer.enhance!(message, 1)
+    expect(substitutions).to contain_exactly(
+      sub_klass.new(0...10, '*box02*'),
+      sub_klass.new(11...30, '*box04*')
+    )
+  end
+
   it 'should not enhance an unrecognized EC2 instance ID' do
     message = 'i-f00bac12'
     substitutions = enhancer.enhance!(message, 1)

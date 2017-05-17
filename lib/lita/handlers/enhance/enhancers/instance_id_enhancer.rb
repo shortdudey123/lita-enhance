@@ -5,6 +5,7 @@ module Lita
     class Enhance
       class InstanceIdEnhancer < Enhancer
         INSTANCE_ID_REGEX = /i-[0-9a-f]{8}/
+        LONG_INSTANCE_ID_REGEX = /i-[0-9a-f]{17}/
 
         def initialize(redis)
           super
@@ -17,7 +18,23 @@ module Lita
 
         def enhance!(string, level)
           substitutions = []
-          string.scan(INSTANCE_ID_REGEX) do
+
+          substitutions += instance_id_regex_substitutions(string, LONG_INSTANCE_ID_REGEX, level)
+          matches = string.scan(LONG_INSTANCE_ID_REGEX)
+
+          # Remove the longer instance ID's from the string so they don't get
+          # detected under the short scheme
+          matches.each do |long_instance_id|
+            string.gsub!(long_instance_id, '')
+          end
+
+          substitutions += instance_id_regex_substitutions(string, INSTANCE_ID_REGEX, level)
+          substitutions
+        end
+
+        def instance_id_regex_substitutions(string, regex, level)
+          substitutions = []
+          string.scan(regex) do
             match = Regexp.last_match
             instance_id = match.to_s
             range = (match.begin(0)...match.end(0))

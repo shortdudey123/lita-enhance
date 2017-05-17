@@ -1,0 +1,168 @@
+{
+  "name": "box04",
+  "chef_environment": "_default",
+  "run_list": [
+    "role[box]"
+  ],
+  "normal": {
+    "tags": [
+
+    ]
+  },
+  "default": {
+  },
+  "override": {
+  },
+  "automatic": {
+    "network": {
+      "interfaces": {
+        "lo": {
+          "mtu": "65536",
+          "flags": [
+            "LOOPBACK",
+            "UP",
+            "LOWER_UP"
+          ],
+          "encapsulation": "Loopback",
+          "addresses": {
+            "127.0.0.1": {
+              "family": "inet",
+              "prefixlen": "8",
+              "netmask": "255.0.0.0",
+              "scope": "Node"
+            }
+          },
+          "state": "unknown"
+        },
+        "eth0": {
+          "type": "eth",
+          "number": "0",
+          "mtu": "1500",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "encapsulation": "Ethernet",
+          "addresses": {
+            "22:00:0A:C4:4B:00": {
+              "family": "lladdr"
+            },
+            "10.196.75.2": {
+              "family": "inet",
+              "prefixlen": "26",
+              "netmask": "255.255.255.192",
+              "broadcast": "10.196.75.255",
+              "scope": "Global"
+            }
+          },
+          "state": "up",
+          "arp": {
+            "10.185.45.62": "fe:ff:ff:ff:ff:ff",
+            "10.196.75.193": "fe:ff:ff:ff:ff:ff"
+          },
+          "routes": [
+            {
+              "destination": "default",
+              "family": "inet",
+              "via": "10.196.75.193"
+            },
+            {
+              "destination": "10.196.75.192/26",
+              "family": "inet",
+              "scope": "link",
+              "proto": "kernel",
+              "src": "10.196.75.2"
+            }
+          ]
+        }
+      },
+      "default_interface": "eth0",
+      "default_gateway": "10.196.75.193"
+    },
+    "ipaddress": "10.196.75.2",
+    "macaddress": "22:00:0A:C4:4B:00",
+    "hostname": "box04",
+    "machinename": "box04",
+    "fqdn": "box04.example.com",
+    "domain": "example.com",
+    "size": "large",
+    "ec2": {
+      "ami_id": "ami-6d6b6028",
+      "ami_launch_index": "0",
+      "ami_manifest_path": "ubuntu-us-west-1/images/ubuntu-trusty-14.04-amd64-server-20140927.manifest.xml",
+      "block_device_mapping_ami": "sda1",
+      "block_device_mapping_ephemeral0": "sdb",
+      "block_device_mapping_root": "/dev/sda1",
+      "hostname": "ip-10-196-75-1.us-west-1.compute.internal",
+      "instance_action": "none",
+      "instance_id": "i-f4ff6afff4ff6afff",
+      "instance_type": "m1.medium",
+      "kernel_id": "aki-880531cd",
+      "local_hostname": "ip-10-196-75-1.us-west-1.compute.internal",
+      "local_ipv4": "10.196.75.2",
+      "mac": "22:00:0A:C4:4B:00",
+      "metrics_vhostmd": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+      "network_interfaces_macs": {
+        "22:00:0a:c4:4b:00": {
+          "device_number": "0",
+          "local_hostname": "ip-10-196-75-1.us-west-1.compute.internal",
+          "local_ipv4s": "10.196.75.2",
+          "mac": "22:00:0a:c4:4b:00",
+          "owner_id": "622089341825",
+          "public_hostname": "ec2-184-169-229-2.us-west-1.compute.amazonaws.com",
+          "public_ipv4s": "184.169.229.2"
+        }
+      },
+      "placement_availability_zone": "us-west-1c",
+      "profile": "default-paravirtual",
+      "public_hostname": "ec2-184-169-229-2.us-west-1.compute.amazonaws.com",
+      "public_ipv4": "184.169.229.2",
+      "public_keys_0_openssh_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzfQTaZLaAK6FUhOBDNJKEGVKJg/AP7SPBNEoCIDOPe9Adq2FUE/LJDQo0F9vL1vvGUwfY6B2FMetKe5ehmrR52wLQ2XuqD+CV5UoiN2Ljkv9c+RwKVY9qxWzlOueqnVKFXpIsLRezAGiiHPneYidF7J7iAfgdGvio1zcpQ2a7agPK0ZpiU2dZ7wmsGd2uKtBKUCMySgPjkAEZeG/8398oecH16O0BmNFXcalLxu5UdZmVfMnFjypiQ+a+jcQ8jzKp2SJU11+0W0I3j0airxGDY5f7NuwhFYuOqIFYQph5C1F6etZYcz3jIoZjJHRDDsmjEJJ4AcZax/qhaiQQzcVf us-west-1-test\n",
+      "reservation_id": "r-b825bfff",
+      "security_groups": [
+        "box"
+      ],
+      "userdata": null
+    },
+    "cloud": {
+      "public_ips": [
+        "184.169.229.2"
+      ],
+      "private_ips": [
+        "10.196.75.2"
+      ],
+      "public_ipv4": "184.169.229.2",
+      "public_hostname": "ec2-184-169-229-2.us-west-1.compute.amazonaws.com",
+      "local_ipv4": "10.196.75.2",
+      "local_hostname": "ip-10-196-75-2.us-west-1.compute.internal",
+      "provider": "ec2"
+    },
+    "cloud_v2": {
+      "public_ipv4_addrs": [
+        "184.169.229.2"
+      ],
+      "local_ipv4_addrs": [
+        "10.196.75.2"
+      ],
+      "provider": "ec2",
+      "public_hostname": "ec2-184-169-229-2.us-west-1.compute.amazonaws.com",
+      "local_hostname": "ip-10-196-75-2.us-west-1.compute.internal",
+      "public_ipv4": "184.169.229.2",
+      "local_ipv4": "10.196.75.2"
+    },
+    "roles": [
+      "webapp",
+      "base"
+    ],
+    "keys": {
+      "ssh": {
+        "host_rsa_public": "AAAAB3NzaC1yc2EAAAABIwAAAQEA5bys9CU7N5MM1F/MhDo5WE8zerQ+We4SO97nAjlPpCquaecmDR6QqgsV2JQNHKRyaElxarfDHbPByE25xBINZJg3cQlcJjEhCqX4M7urKdLzU/rrHfOOtZ4OfTzSPH2L132fnfXzkwjvEJEjNhAzD1Vbc8eU4Kzw7r4jWBf8pAedppWltJ0bemhLmJo4vMdrW4W2ApKynNFc805TSYN91zjoK5b67/9LHYUR9DJVo1QeAgbYdD4dTv1VInEGS5x3XeFIiptLvqQxokq38uxZ+vzwDxBnFUcZ6XAEZO2QxFFUA0sSHY4mn/G/a82U5K/icMW5qtoAAofad9/ER5vR8w==",
+        "host_dsa_public": "AAAAB3NzaC1kc3MAAACBALjlN6cdd9pywsqAUeeze7FJanY9IgSSfZ9mrLQt2HXDqrkBCqXbzCLpucWuBua+3Gwa2vHt/N50A3LDCB1CcuDOMokb8cfvC6l59eQVyxQOnaPJWSbrWmcO+uo8VV3gsG0RTP5F85E7to3FwOl6p5640ZXtqYb1rY7wGwSPRHI3AAAAFQCNfC81z/r1Qb5wzmX638OG2s3nWQAAAIB2nyWpnVKWflwsrIf8L6v4GI5zwbcrj1ZfQ7hOpVHpkD+6hg+dJVurN+Z2NQIvrKZ0LZ7BRHi/8G09Bn0px7beRdMgqrUe4x4myLsyyJ6E8h8XaUkHPx8gtgDBF+bdtmVHiOeZGCxDUoU3D1WYQRtGHpxvBFjngmMuoeaDpAB7gQAAAIBCHAKMfDbUXjhriIoN6w++S0cEqesWHjjO1KCxdGbz1Ux2nPG1Imh76Qs6wGZPPyXZcPcCEyYHyg1P8gwO77nDI1CHR0ROGu2zXVuIj0/PLtzcDh7Rg6jYfeqguJN73EHqEfMqkHXF9Nwme6hKsF9zFSZoms3x1H9pKkeW9YHWOA==",
+        "host_ecdsa_public": "AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBIX0g4mZg10dH9f1ITBha52gB4J8kPMlBtslursdojM79mKIweZFjFezON8GqET1iNSXHIDwhQFqagIHMn3dgyc=",
+        "host_ecdsa_type": "ecdsa-sha2-nistp256"
+      }
+    }
+  }
+}

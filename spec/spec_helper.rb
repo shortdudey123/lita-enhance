@@ -22,6 +22,10 @@ RSpec.shared_context 'mocks' do
     chef_nodes.detect {|n| n.name == 'box03' }
   end
 
+  let(:west1_chef_node_long_id) do
+    chef_nodes.detect {|n| n.name == 'box04' }
+  end
+
   let(:stg_web01) do
     chef_nodes.detect {|n| n.name == 'web01' }
   end
